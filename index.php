@@ -5,6 +5,7 @@
     <title>Home</title>
 
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/table.css">
 </head>
 
 <body>

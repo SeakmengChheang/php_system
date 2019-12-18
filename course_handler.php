@@ -16,6 +16,7 @@
             <th>Course Code</th>
             <th>Course Group</th>
             <th>Course Description</th>
+            <th>Author</th>
             <?php
                 if($_SESSION['role'] == 'student')
                     echo "<th>Author</th>";
