@@ -2,25 +2,26 @@
 
 <div>
     <div class="button-bar">
-        <button><?php if (isset($_SESSION['role'])) $_SESSION['role'] == 'student'
-                    ? print 'My Course'
-                    : print 'Added Courses';
-                else print 'N/A'; ?></button>
+        <button><?php if (isset($_SESSION['role'])) {
+                    $_SESSION['role'] == 'student'
+                        ? print 'My Course'
+                        : print 'Added Courses';
+                } else include 'php/error_page.php'; ?></button>
         <button>View All</button>
     </div>
 
     <table>
         <thead>
-            <th>Academic</th>
-            <th>Semester</th>
-            <th>Course Name</th>
-            <th>Course Code</th>
-            <th>Course Group</th>
-            <th>Course Description</th>
-            <th>Author</th>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Role</th>
             <?php
-            if (isset($_SESSION['role']) && $_SESSION['role'] == 'student')
-                echo "<th>Author</th>";
+            if (isset($_SESSION['role'])) {
+                if ($_SESSION['role'] == 'student')
+                    echo "<th>Position</th>";
+            } else {
+                //TODO: 
+            }
             ?>
 
         </thead>
@@ -33,6 +34,7 @@
                 else
                     include 'php/course/my_added_course.php';
             } else {
+                //TODO: 
                 include 'php/error_page.php';
             }
             ?>
