@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Contact</title>
+
+    <link rel="stylesheet" href="css/template.css">
+</head>
+<body>
+<?php include 'html/header.html' ?>
+
 <?php session_start(); ?>
 
 <div>
@@ -41,3 +51,8 @@
         </tbody>
     </table>
 </div>
+
+<?php include 'html/footer.html' ?>
+
+</body>
+</html>
