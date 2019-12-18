@@ -1,0 +1,33 @@
+.navbar {
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+    height: max-content;
+    background-color: darkgoldenrod;
+    font-weight: 500;
+    font-size: 1.1em;
+}
+
+.menu {
+    height: 100%;
+}
+
+.menu ul {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.menu li {
+    padding: 10px;
+    list-style-type: none;
+    display: inline-block;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: white;
+}
+
+.menu li a:hover {
+    color: black;
+}
