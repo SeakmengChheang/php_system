@@ -1,6 +1,8 @@
 <?php
 
-require 'open_close_db.php';
+function open_db() {
+    return mysqli_connect("localhost", "root", "", "system");
+}
 
 function get_assoc($sql)
 {
@@ -10,7 +12,7 @@ function get_assoc($sql)
 
     $rtn = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    close_db($link);
+    $link->close();
     
     return $rtn;
 }
@@ -23,7 +25,7 @@ function get_num($sql)
 
     $rtn = mysqli_fetch_all($result, MYSQLI_NUM);
 
-    close_db($link);
+    $link->close();
 
     return $rtn;
 }
