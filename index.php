@@ -10,10 +10,8 @@
 
 <body>
     <?php
-        session_start();
-        if(!isset($_SESSION['profile'])) {
-            header("location: login.php");
-        }
+        include "php/function/check_profile.php";
+        check_profile();
     ?>
 
     <?php include 'html/header.html'; ?>
