@@ -5,6 +5,7 @@
     <title>Course</title>
 
     <link rel="stylesheet" href="css/template.css">
+    <link rel="stylesheet" href="css/table.css">
 </head>
 
 <body>
@@ -14,7 +15,7 @@
 
     <div>
         <div class="button-bar">
-            <button><?php if (isset($_SESSION['role'])) $_SESSION['role'] == 'student'
+            <button><?php if (isset($_SESSION['profile']['role'])) $_SESSION['role'] == 'student'
                         ? print 'My Course'
                         : print 'Added Courses';
                     else print 'N/A'; ?></button>
@@ -30,23 +31,31 @@
                 <th>Course Group</th>
                 <th>Course Description</th>
                 <th>Author</th>
-                <?php
-                if (isset($_SESSION['role']) && $_SESSION['role'] == 'student')
-                    echo "<th>Author</th>";
-                ?>
-
             </thead>
 
             <tbody>
                 <?php
-                if (isset($_SESSION['role'])) {
-                    if ($_SESSION['role'] == 'student')
-                        include 'php/course/my_course.php';
-                    else
+                require 'php/function/db_get.php';
+                echo "<pre>";
+                print_r($_SESSION['profile']);
+
+                if (isset($_SESSION['profile']['role'])) {
+                    if ($_SESSION['profile']['role'] == 'student') {
+                        $sql = "SELECT c.academic, c.semester, c.courseName, 
+                            c.courseCode, cg.name AS courseGroup, c.courseDescription, 
+                            user.fullName AS createdBy FROM course AS c
+                            INNER JOIN course_group cg ON c.cgId = cg.id
+                            INNER JOIN user ON c.createdBy = user.id;";
+
+                        $res = get_assoc($sql);
+
+                        print_r($res);
+                    } else
                         include 'php/course/my_added_course.php';
                 } else {
                     include 'php/error_page.php';
                 }
+                echo "</pre>";
                 ?>
             </tbody>
         </table>

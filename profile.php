@@ -10,9 +10,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Profile</title>
+<<<<<<< HEAD
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
     <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/template.css">
+    
+=======
+    <title>Profile</title>
+<<<<<<< HEAD
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/template.css">
+=======
+    <link rel="stylesheet" href="CSS/profile.css">
+>>>>>>> 5743099ca7c0f01678f418a9ee92982d4772d3b2
+>>>>>>> 6164d9b0f2f36f8bebdcab9ee47e1db880dab8e9
 </head>
 <body>
     <?php include "html/header.html"; ?>
