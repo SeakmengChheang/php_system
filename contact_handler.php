@@ -50,15 +50,19 @@ check_profile();
                     //IF role is staff then also fetch POSITION
                     $sql = "SELECT user.id, user.fullName, user.role" .
                         ($_SESSION['profile']['role'] == 'staff'
-                            ? ", staff.position FROM user  INNER JOIN staff ON user.id = staff.id"
-                            : " FROM user");
+                            ? ", staff.position FROM user LEFT OUTER JOIN staff ON user.id = staff.id ORDER BY staff.position"
+                            : " FROM user WHERE user.role = 'student' ORDER BY user.fullName");
 
                     $res = get_num($sql);
 
                     foreach ($res as $user) {
                         echo "<tr>";
-                        foreach ($user as $val)
-                            echo "<td>$val</td>";
+                        foreach ($user as $val) {
+                            if ($val == '')
+                                echo "<td>N/A</td>";
+                            else
+                                echo "<td>$val</td>";
+                        }
                         echo "</tr>";
                     }
                 } else {
