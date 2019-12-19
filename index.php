@@ -1,3 +1,12 @@
+<?php
+include "php/function/check_profile.php";
+
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
+    
+check_profile();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,21 +18,17 @@
 </head>
 
 <body>
-    <?php
-        include "php/function/check_profile.php";
-        check_profile();
-    ?>
-    
+
     <?php include 'html/header.html'; ?>
-    
-    
+
+
     <!-- <div class="body">
 
     </div> -->
-    
-    
+
+
     <?php include 'html/footer.html'; ?>
-    
+
 </body>
 
 </html>
