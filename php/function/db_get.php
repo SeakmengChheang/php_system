@@ -1,8 +1,6 @@
 <?php
 
-function open_db() {
-    return mysqli_connect("localhost", "root", "", "system");
-}
+include "php/function/open_db.php";
 
 function get_assoc($sql)
 {
@@ -29,3 +27,4 @@ function get_num($sql)
 
     return $rtn;
 }
+?>

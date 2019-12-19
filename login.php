@@ -4,7 +4,6 @@
         header("location: index.php");
     } else {
         if(isset($_POST["username"]) && isset($_POST["password"])){
-            
             include "php/function/db_get.php";
             include "php/function/get_value.php";    
             
