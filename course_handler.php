@@ -15,9 +15,10 @@
 
     <div>
         <div class="button-bar">
-            <button><?php if (isset($_SESSION['profile']['role'])) $_SESSION['role'] == 'student'
-                        ? print 'My Course'
-                        : print 'Added Courses';
+            <button><?php if (isset($_SESSION['profile']['role']))
+                        $_SESSION['profile']['role'] == 'student'
+                            ? print 'My Course'
+                            : print 'Added Courses';
                     else print 'N/A'; ?></button>
             <button>View All</button>
         </div>
@@ -40,18 +41,22 @@
                 print_r($_SESSION['profile']);
 
                 if (isset($_SESSION['profile']['role'])) {
-                    if ($_SESSION['profile']['role'] == 'student') {
-                        $sql = "SELECT c.academic, c.semester, c.courseName, 
+                    $sql = "SELECT c.academic, c.semester, c.courseName, 
                             c.courseCode, cg.name AS courseGroup, c.courseDescription, 
                             user.fullName AS createdBy FROM course AS c
                             INNER JOIN course_group cg ON c.cgId = cg.id
                             INNER JOIN user ON c.createdBy = user.id;";
 
-                        $res = get_assoc($sql);
+                    $res = get_num($sql);
 
-                        print_r($res);
-                    } else
-                        include 'php/course/my_added_course.php';
+                    print_r($res);
+                    
+                    foreach ($res as $course) {
+                        echo "<tr>";
+                        foreach ($course as $val)
+                            echo "<td>$val</td>";
+                        echo "</tr>";
+                    }
                 } else {
                     include 'php/error_page.php';
                 }

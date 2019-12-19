@@ -13,14 +13,14 @@
         include "php/function/check_profile.php";
         check_profile();
     ?>
-
-    <!-- <?php include 'html/header.html'; ?>
+    
+    <?php include 'html/header.html'; ?>
     
     <div class="body">
 
     </div>
     
-    <?php include 'html/footer.html'; ?> -->
+    <?php include 'html/footer.html'; ?>
     
 </body>
 
