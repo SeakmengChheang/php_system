@@ -1,6 +1,33 @@
 <?php
-    include "message.php";
+    session_start();
+    if(isset($_SESSION['profile'])) {
+        header("location: index.php");
+    } else {
+        include "php/function/db_get.php";
+        include "php/function/get_value.php";
+
+        if(isset($_POST["username"]) && isset($_POST["password"])){
+            
+            $username = get_value("username" , "POST");
+            $password = get_value("password" , "POST");        
+
+            $sql = "SELECT * FROM user WHERE username = '$username' && password = '$password' ";
+
+            $data = get_assoc($sql);
+
+            if(count($data) == 1){
+                $_SESSION["profile"] = $data[0];
+                header("location: index.php");
+            }
+            else{
+                $_SESSION["message"] = "WRONG USERNAME OR PASSWORD";
+                include "message.php";
+            }
+        } 
+    }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +43,7 @@
         <fieldset class="box">
             <legend><h1>S I G N I N</h1></legend>
 
-            <form action="sign_in.php" method="POST">
+            <form action="login.php" method="POST">
                 <div class="logo-container">
                     <img src="images/userlogo.svg" alt="" class="logo">
                 </div>

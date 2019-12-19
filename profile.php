@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include "message.php";
 ?>
 
@@ -9,6 +10,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -16,6 +18,10 @@
     <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/template.css">
     
+=======
+    <title>Profile</title>
+    <link rel="stylesheet" href="CSS/profile.css">
+>>>>>>> 5743099ca7c0f01678f418a9ee92982d4772d3b2
 </head>
 <body>
     <?php include "html/header.html"; ?>
