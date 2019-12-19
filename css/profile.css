@@ -1,0 +1,13 @@
+.container1,.container2{
+    width: 80%;
+    margin: auto;
+}
+.div1-1,.div2-1{
+    display: inline-block;
+}
+.div2-1{
+    margin-left: 10px;
+}
+#change_password:hover{
+    text-decoration: none;
+}
