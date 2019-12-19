@@ -1,11 +1,5 @@
-<script src = "message.js"></script>
 <?php
-    session_start();
-    $message = $_SESSION["message"] ?? "";
-    if($message != ""){
-        echo "<script>output('$message')</script>";
-        $_SESSION["message"] = "";
-    }
+    include "message.php";
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sign In</title>
-    <link rel="stylesheet" href="CSS/login.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
     <div class="container">
@@ -24,19 +18,19 @@
 
             <form action="sign_in.php" method="POST">
                 <div class="logo-container">
-                    <img src="Image/userlogo.svg" alt="" class="logo">
+                    <img src="images/userlogo.svg" alt="" class="logo">
                 </div>
     
                 <div class="input-container">
                     <label>
-                        <img src="Image/user.svg" align="top" alt="" class="icon">
+                        <img src="images/user.svg" align="top" alt="" class="icon">
                         <input type="text" class="input" id="inputtext" placeholder="username" name="username">
                     </label>
                 </div>
                 
                 <div class="input-container">
                     <label>
-                        <img src="Image/lock.svg" align="top" alt="" class="icon">
+                        <img src="images/lock.svg" align="top" alt="" class="icon">
                         <input type="password" class="input" id="inputpassword" placeholder="password" name="password">
                     </label>
                 </div>

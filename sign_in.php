@@ -1,9 +1,7 @@
-<script src="message.js"></script>
-
 <?php
     session_start();
-    include "db_get.php";
-    include "function.php";
+    include "php/function/db_get.php";
+    include "php/function/get_value.php";
 
     $username = get_value("username" , "POST");
     $password = get_value("password" , "POST");
