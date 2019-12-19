@@ -4,7 +4,6 @@
     <title>Contact</title>
 
     <link rel="stylesheet" href="css/template.css">
-    <link rel="stylesheet" href="css/table.css">
 </head>
 <body>
 <?php include 'html/header.html' ?>
