@@ -9,10 +9,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<<<<<<< HEAD
-    <title>Profile</title>
-    <link rel="stylesheet" href="CSS/profile.css">
-=======
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -20,7 +16,6 @@
     <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/template.css">
     
->>>>>>> 9e38c48771055aa25b5a3091d918ef0b10bee4ba
 </head>
 <body>
     <?php include "html/header.html"; ?>

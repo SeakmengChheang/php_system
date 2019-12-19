@@ -8,7 +8,7 @@
     
     $sql = "SELECT * FROM user WHERE username = '$username' && password = '$password' ";
 
-    $data = get_assoc($sql);
+    $data = get_assoc($sql)[0];
 
     if(count($data) == 1){
         $_SESSION["profile"] = $data;
