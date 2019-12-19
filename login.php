@@ -3,10 +3,10 @@
     if(isset($_SESSION['profile'])) {
         header("location: index.php");
     } else {
-        include "php/function/db_get.php";
-        include "php/function/get_value.php";
-
         if(isset($_POST["username"]) && isset($_POST["password"])){
+            
+            include "php/function/db_get.php";
+            include "php/function/get_value.php";    
             
             $username = get_value("username" , "POST");
             $password = get_value("password" , "POST");        
@@ -17,13 +17,13 @@
 
             if(count($data) == 1){
                 $_SESSION["profile"] = $data[0];
-                header("location: index.php");
+                header("location: profile.php");
             }
             else{
                 $_SESSION["message"] = "WRONG USERNAME OR PASSWORD";
                 include "message.php";
             }
-        } 
+        }
     }
 ?>
 
@@ -51,7 +51,7 @@
                 <div class="input-container">
                     <label>
                         <img src="images/user.svg" align="top" alt="" class="icon">
-                        <input type="text" class="input" id="inputtext" placeholder="username" name="username">
+                        <input type="text" class="input" id="inputtext" placeholder="username" name="username" value="<?php $username = $_POST["username"] ?? ""; echo $username;?>">
                     </label>
                 </div>
                 

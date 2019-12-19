@@ -11,7 +11,8 @@
 <html lang="en">
 <head>
     <title>Profile</title>
-    <link rel="stylesheet" href="CSS/profile.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/template.css">
 </head>
 <body>
     <?php include "html/header.html"; ?>
@@ -23,9 +24,9 @@
             <p class="info">Role </p>    
         </div>
         <div class="div2-1">
-            <p class="info">:<?php echo $data[0]["username"]?></p>
-            <p class="info">:<?php echo $data[0]["fullName"]?></p>
-            <p class="info">:<?php echo $data[0]["role"]?></p>
+            <p class="info">:<?php echo $data["username"]?></p>
+            <p class="info">:<?php echo $data["fullName"]?></p>
+            <p class="info">:<?php echo $data["role"]?></p>
         </div>
     </fieldset>
 
