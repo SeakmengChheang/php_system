@@ -20,11 +20,13 @@ if (session_status() == PHP_SESSION_NONE)
         <th>Course Group</th>
         <th>Course Description</th>
         <th>Author</th>
+        <th>Action</th>
     </thead>
 
     <tbody>
         <?php
         require_once 'php/function/run_query.php';
+        include_once 'php/function/sql_cmds.php';
 
         if (isset($_SESSION['profile']['role'])) {
             $id = $_SESSION['profile']['id'];
@@ -36,12 +38,19 @@ if (session_status() == PHP_SESSION_NONE)
                 $sql = fetch_staff_created_courses_cmd($id);
             }
 
-            $res = get_num($sql);
+            $res = get_assoc($sql);
 
             foreach ($res as $course) {
                 echo "<tr>";
-                foreach ($course as $val)
-                    echo "<td>$val</td>";
+                foreach ($course as $key => $val) {
+                    if ($key == 'id') {
+                        $course_id = $val;
+                        continue;
+                    } else
+                        echo "<td>$val</td>";
+                }
+                //TODO: Change it
+                echo "<td><a href=\"php/course/unenroll_handler.php?course_id=$course_id\">Unenroll</a></td>";
                 echo "</tr>";
             }
         } else {

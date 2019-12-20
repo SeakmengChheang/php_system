@@ -1,7 +1,7 @@
 <?php
 function fetch_student_enrolled_courses_cmd($id)
 {
-    $sql = "SELECT c.academic, c.semester, c.courseName, c.courseCode, 
+    $sql = "SELECT c.id, c.academic, c.semester, c.courseName, c.courseCode, 
                     cg.name AS courseGroup, c.courseDescription, 
                     user.fullName AS createdBy FROM student 
                     INNER JOIN course AS c ON c.id = student.courseId
@@ -20,7 +20,7 @@ function fetch_student_enrolled_courseIds_cmd($id)
 
 function fetch_staff_created_courses_cmd($id)
 {
-    $sql = "SELECT c.academic, c.semester, c.courseName,
+    $sql = "SELECT c.id, c.academic, c.semester, c.courseName,
         c.courseCode, cg.name AS courseGroup, c.courseDescription,
         user.fullName AS createdBy FROM course AS c
         INNER JOIN course_group cg ON c.cgId = cg.id

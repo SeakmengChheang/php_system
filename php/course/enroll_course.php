@@ -1,6 +1,6 @@
 <?php
 include_once 'php/function/sql_cmds.php';
-include_once 'php/function/db_get.php';
+include_once 'php/function/run_query.php';
 
 function fetch_courseIds($id)
 {
@@ -43,7 +43,7 @@ $courses = get_assoc($sql);
 
     <tbody>
         <?php
-        include_once 'php/function/db_get.php';
+        include_once 'php/function/run_query.php';
         include_once 'php/function/sql_cmds.php';
 
         if (isset($_SESSION['profile']['role'])) {
@@ -51,7 +51,7 @@ $courses = get_assoc($sql);
                 echo "<tr>";
                 foreach ($course as $key => $val) {
                     if ($key == 'id') {
-                        $course_id = $key;
+                        $course_id = $val;
                         continue;
                     } else
                         echo "<td>$val</td>";
