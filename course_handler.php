@@ -1,5 +1,5 @@
 <?php
-include "php/function/check_profile.php";
+include_once "/system/php/function/check_profile.php";
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -13,12 +13,12 @@ check_profile();
 <head>
     <title>My Course</title>
 
-    <link rel="stylesheet" href="css/template.css">
-    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="/system/css/template.css">
+    <link rel="stylesheet" href="/system/css/table.css">
 </head>
 
 <body>
-    <?php include 'html/header.html' ?>
+    <?php include '/system/html/header.html' ?>
 
     <div class="content">
         <?php
@@ -29,19 +29,19 @@ check_profile();
 
             if (isset($_SESSION['profile']['role'])) {
                 if ($_SESSION['profile']['role'] == 'staff')
-                    include_once 'php/course/add_course.php';
+                    header("location: /system/php/course/add_course.php");
                 else
-                    include_once 'php/course/enroll_course.php';
+                    include_once '/system/php/course/enroll_course.php';
             } else {
-                include_once 'php/error_page.php';
+                include_once '/system/php/error_page.php';
             }            
         } else
-            include_once 'php/course/my_course.php';
+            include_once '/system/php/course/my_course.php';
         ?>
 
     </div>
 
-    <?php include 'html/footer.html' ?>
+    <?php include '/system/html/footer.html' ?>
 </body>
 
 </html>

@@ -9,6 +9,12 @@ class Course
 	public $cg_id;
 	public $course_desc;
 	public $created_by;
-}
 
-?>
+	static function concat_academic($y1, $y2)
+	{
+		if ($y2 <= $y1)
+			return false;
+
+		return $y1 . '-' . $y2;
+	}
+}

@@ -1,5 +1,7 @@
 <?php
-include_once '../function/run_query.php';
+include_once '/system/php/function/run_query.php';
+
+//TODO: For staff
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -12,4 +14,4 @@ $sql = "DELETE FROM student
 
 run_query($sql);
 
-header("location: ../../course_handler.php");
+header("location: /system/course_handler.php");

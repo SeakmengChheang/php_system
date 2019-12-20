@@ -38,3 +38,13 @@ function fetch_student_not_yet_enroll_courses($cIds) {
     WHERE c.id NOT IN ($cIds)";
     return $sql;
 }
+
+function add_course_cmd($course)
+{
+    $sql = "INSERT INTO course(`academic`, `semester`, `courseName`, `courseCode`, 
+            `cgId`, `courseDescription`, `createdBy`) VALUES('$course->academic', 
+            '$course->semester', '$course->course_name', '$course->course_code', '$course->cg_id',
+            '$course->course_desc', '$course->created_by');";
+
+    return $sql;
+}
