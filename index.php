@@ -18,18 +18,6 @@ check_profile();
 </head>
 
 <body>
-<<<<<<< HEAD
-    <?php
-        session_start(); 
-        function check_profile(){
-            if(!isset($_SESSION['profile'])) {
-                header("location: login.php");
-            }
-        }
-        check_profile();
-    ?>
-=======
->>>>>>> ef3ce4fa27772f4cb99e1ed1824fc02c912ea1c2
 
     <?php include 'html/header.html'; ?>
 

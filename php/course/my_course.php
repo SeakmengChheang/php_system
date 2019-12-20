@@ -24,14 +24,18 @@ if (session_status() == PHP_SESSION_NONE)
 
     <tbody>
         <?php
-        require_once 'php/function/db_get.php';
+        include_once 'php/function/db_get.php';
+        include_once 'php/function/sql_cmds.php';
 
         if (isset($_SESSION['profile']['role'])) {
-            $sql = "SELECT c.academic, c.semester, c.courseName, 
-                            c.courseCode, cg.name AS courseGroup, c.courseDescription, 
-                            user.fullName AS createdBy FROM course AS c
-                            INNER JOIN course_group cg ON c.cgId = cg.id
-                            INNER JOIN user ON c.createdBy = user.id;";
+            $id = $_SESSION['profile']['id'];
+            if ($_SESSION['profile']['role'] == 'student') {
+                //fetch enrolled courses
+                $sql = fetch_student_enrolled_courses_cmd($id);
+            } else {
+                //fetch created courses
+                $sql = fetch_staff_created_courses_cmd($id);
+            }
 
             $res = get_num($sql);
 
