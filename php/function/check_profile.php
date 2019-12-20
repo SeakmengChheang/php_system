@@ -1,11 +1,12 @@
 <?php
     
-
+    // session_start(); 
     function check_profile(){
-        // session_start();
         if(!isset($_SESSION['profile'])) {
             header("location: login.php");
         }
     }
+    check_profile();
+
 
 ?>

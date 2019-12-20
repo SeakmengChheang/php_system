@@ -1,3 +1,4 @@
+<script src = "js/message.js"></script>
 <?php
     session_start();
 
@@ -5,7 +6,7 @@
     include "php/function/update.php";
 
     $data = $_SESSION["profile"];
-
+    
     $oldpassword = get_value("old_password","POST");
     $newpassword = get_value("new_password","POST");
     $cnewpassword = get_value("cnew_password","POST");
@@ -16,10 +17,10 @@
         update($sql);
         $data["password"] = $newpassword;
         $_SESSION["profile"] = $data;
-        $_SESSION["message"] = "SUCCESSFUL";
+        echo "<script>output('SUCCESSFUL')</script>";
     }
     else{
-        $_SESSION["message"] = "WRONG PASSWORD";
+        echo "<script>output('WRONG PASSWORD')</script>";
     }
     header("location: profile.php");
 

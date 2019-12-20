@@ -1,9 +1,12 @@
+<script src = "js/message.js"></script>
+
 <?php
     session_start();
     if(isset($_SESSION['profile'])) {
-        header("location: index.php");
+        session_destroy();
     } else {
         if(isset($_POST["username"]) && isset($_POST["password"])){
+            // session_start();
             include "php/function/db_get.php";
             include "php/function/get_value.php";    
             
@@ -19,8 +22,7 @@
                 header("location: profile.php");
             }
             else{
-                $_SESSION["message"] = "WRONG USERNAME OR PASSWORD";
-                include "message.php";
+                echo "<script>output('WRONG USERNAME OR PASSWORD')</script>";
             }
         }
     }
@@ -62,7 +64,7 @@
                 </div>
     
                 <div class="signup-container">
-                    <p class="signup-p"><a href="" class="signup-a">Sign Up</a></p>
+                    <p class="signup-p"><a href="sign_up.php" class="signup-a">Sign Up</a></p>
                 </div>
     
                 <div class="button-container">
