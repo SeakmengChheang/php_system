@@ -24,7 +24,7 @@ if (session_status() == PHP_SESSION_NONE)
 
     <tbody>
         <?php
-        require_once 'php/function/db_get.php';
+        require_once 'php/function/run_query.php';
 
         if (isset($_SESSION['profile']['role'])) {
             $sql = "SELECT c.academic, c.semester, c.courseName, 

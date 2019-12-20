@@ -1,14 +1,14 @@
 <script src = "js/message.js"></script>
 
 <?php
-<<<<<<< HEAD
     session_start();
+    include "message.php";
     if(isset($_SESSION['profile'])) {
         session_destroy();
     } else {
         if(isset($_POST["username"]) && isset($_POST["password"])){
             // session_start();
-            include "php/function/db_get.php";
+            include "php/function/run_query.php";
             include "php/function/get_value.php";    
             
             $username = get_value("username" , "POST");
@@ -25,33 +25,8 @@
             else{
                 echo "<script>output('WRONG USERNAME OR PASSWORD')</script>";
             }
-=======
-session_start();
-if (isset($_SESSION['profile'])) {
-    header("location: index.php");
-} else {
-    include "php/function/db_get.php";
-    include "php/function/get_value.php";
-
-    if (isset($_POST["username"]) && isset($_POST["password"])) {
-
-        $username = get_value("username", "POST");
-        $password = get_value("password", "POST");
-
-        $sql = "SELECT * FROM user WHERE username = '$username' && password = '$password' ";
-
-        $data = get_assoc($sql);
-
-        if (count($data) == 1) {
-            $_SESSION["profile"] = $data[0];
-            header("location: index.php");
-        } else {
-            $_SESSION["message"] = "WRONG USERNAME OR PASSWORD";
-            include "message.php";
->>>>>>> ef3ce4fa27772f4cb99e1ed1824fc02c912ea1c2
         }
     }
-}
 ?>
 
 
@@ -82,7 +57,7 @@ if (isset($_SESSION['profile'])) {
                 <div class="input-container">
                     <label>
                         <img src="images/user.svg" align="top" alt="" class="icon">
-                        <input type="text" class="input" id="inputtext" placeholder="username" name="username">
+                        <input type="text" class="input" id="inputtext" placeholder="username" name="username" value = <?php $username = $_POST['username'] ?? ""; echo $username?>>
                     </label>
                 </div>
 

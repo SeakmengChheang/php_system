@@ -1,7 +1,8 @@
 <?php
-
+    session_start();
+            
     include "php/function/get_value.php";
-    include "php/function/db_get.php";
+    include "php/function/run_query.php";
 
     $username = get_value("username","POST");
     $password = get_value("password","POST");
@@ -12,7 +13,7 @@
     if(strlen($username) > 30 || strlen($password) > 100 
     || strlen($fullname) > 100 || $role == "" 
     || $cpassword != $password){
-        echo "ERROR";
+        $_SESSION["message"] = "PLEASE INPUT VALID DATA";
         header("location: sign_up.php");
     }
     else{
@@ -27,12 +28,13 @@
 
             $sql = "SELECT * FROM user WHERE username = '$username'";
             $data = get_assoc($sql);
-            session_start();
             $_SESSION["profile"] = $data[0];
+            $_SESSION["message"] = "SUCCESSFUL";
             header("location: profile.php");
         }
         else{
-            echo "YOUR USERNAME HAS BEEN USED, PLEASE TRY ANOTHER ONE";
+            $_SESSION["message"] = "YOUR USERNAME HAS BEEN USED, PLEASE TRY ANOTHER ONE";
+            header("location: sign_up.php");
         }
 
         
