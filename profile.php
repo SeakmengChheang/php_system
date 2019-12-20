@@ -1,7 +1,7 @@
-<script src = "js/message.js"></script>
 <?php
     session_start();
     $data = $_SESSION["profile"];
+    include "message.php";
 ?>
 
 

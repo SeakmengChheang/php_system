@@ -44,7 +44,7 @@ check_profile();
 
             <tbody>
                 <?php
-                include_once 'php/function/db_get.php';
+                include_once 'php/function/run_query.php';
 
                 if (isset($_SESSION['profile']['role'])) {
                     //IF role is staff then also fetch POSITION

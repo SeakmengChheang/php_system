@@ -24,8 +24,7 @@ if (session_status() == PHP_SESSION_NONE)
 
     <tbody>
         <?php
-        include_once 'php/function/db_get.php';
-        include_once 'php/function/sql_cmds.php';
+        require_once 'php/function/run_query.php';
 
         if (isset($_SESSION['profile']['role'])) {
             $id = $_SESSION['profile']['id'];

@@ -1,9 +1,9 @@
 <?php
-    /**
-     * Check if user already logged in
-     * by checking if $_SESSION exists
-     * If user is NOT exist, go to Login Page
-     */
+
+    if(session_status() == PHP_SESSION_NONE){
+        session_start();
+    }
+
     function check_profile(){
         if(!isset($_SESSION['profile'])) {
             header("location: login.php");
