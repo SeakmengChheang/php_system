@@ -1,59 +1,80 @@
+<?php
+include "php/function/check_profile.php";
+
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
+
+check_profile();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Contact</title>
 
     <link rel="stylesheet" href="css/template.css">
     <link rel="stylesheet" href="css/table.css">
 </head>
+
 <body>
-<?php include 'html/header.html' ?>
+    <?php include 'html/header.html' ?>
 
-<?php session_start(); ?>
+    <div class="content">
+        <div class="button-bar">
+            <button>View All</button>
+            <button><?php if (isset($_SESSION['profile']['role']))
+                        print "View All";
+                    else include 'php/error_page.php'; ?></button>
+        </div>
 
-<div>
-    <div class="button-bar">
-        <button><?php if (isset($_SESSION['role'])) {
-                    $_SESSION['role'] == 'student'
-                        ? print 'My Course'
-                        : print 'Added Courses';
-                } else include 'php/error_page.php'; ?></button>
-        <button>View All</button>
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Role</th>
+                <?php
+                if (isset($_SESSION['profile']['role'])) {
+                    if ($_SESSION['profile']['role'] == 'staff')
+                        echo "<th>Position</th>";
+                }
+                ?>
+
+            </thead>
+
+            <tbody>
+                <?php
+                include_once 'php/function/db_get.php';
+
+                if (isset($_SESSION['profile']['role'])) {
+                    //IF role is staff then also fetch POSITION
+                    $sql = "SELECT user.id, user.fullName, user.role" .
+                        ($_SESSION['profile']['role'] == 'staff'
+                            ? ", staff.position FROM user LEFT OUTER JOIN staff ON user.id = staff.id ORDER BY staff.position"
+                            : " FROM user WHERE user.role = 'student' ORDER BY user.fullName");
+
+                    $res = get_num($sql);
+
+                    foreach ($res as $user) {
+                        echo "<tr>";
+                        foreach ($user as $val) {
+                            if ($val == '')
+                                echo "<td>N/A</td>";
+                            else
+                                echo "<td>$val</td>";
+                        }
+                        echo "</tr>";
+                    }
+                } else {
+                    include 'php/error_page.php';
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 
-    <table>
-        <thead>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Role</th>
-            <?php
-            if (isset($_SESSION['role'])) {
-                if ($_SESSION['role'] == 'student')
-                    echo "<th>Position</th>";
-            } else {
-                //TODO: 
-            }
-            ?>
-
-        </thead>
-
-        <tbody>
-            <?php
-            if (isset($_SESSION['role'])) {
-                if ($_SESSION['role'] == 'student')
-                    include 'php/course/my_course.php';
-                else
-                    include 'php/course/my_added_course.php';
-            } else {
-                //TODO: 
-                include 'php/error_page.php';
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
-
-<?php include 'html/footer.html' ?>
+    <?php include 'html/footer.html' ?>
 
 </body>
+
 </html>
