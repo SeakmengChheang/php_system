@@ -12,21 +12,21 @@ check_profile();
 if (isset($_POST["submit"])) {
     $course = new Course();
     $mysqli = open_mysqli();
+    $course->id = $mysqli->real_escape_string($_GET['course_id']);
 
     if (!Course::set_vals_and_validate($course, $_POST, $mysqli)) {
         $_SESSION['course'] = (array) $course;
-        header("location: /system/php/course/form_course.php?action=add");
+        header("location: /system/php/course/form_course.php?action=edit&course_id=$course->id");
         $mysqli->close();
         die();
     }
 
-    $sql = add_course_cmd($course);
+    $sql = update_course_cmd($course);
     if ($mysqli->query($sql)) {
         header("location: /system/course_handler.php");
     } else {
         $_SESSION['course'] = (array) $course;
-        echo "<center><h1>Error adding the course</h1> <h3>Redirect back in 5s.</h3></center>";
-        sleep(5);
-        header("location: /system/php/course/form_course.php?action=add");
+        echo "<center><h1>Error updating the course</h1> <h3>Redirect back in 5s.</h3></center>";
+        header("location: /system/php/course/form_course.php?action=edit&course_id=$course->id");
     }
 }

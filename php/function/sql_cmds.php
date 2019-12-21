@@ -29,7 +29,8 @@ function fetch_staff_created_courses_cmd($id)
     return $sql;
 }
 
-function fetch_student_not_yet_enroll_courses($cIds) {
+function fetch_student_not_yet_enroll_courses($cIds)
+{
     $sql = "SELECT c.id, c.academic, c.semester, c.courseName,
     c.courseCode, cg.name AS courseGroup, c.courseDescription,
     user.fullName AS createdBy FROM course AS c
@@ -45,6 +46,22 @@ function add_course_cmd($course)
             `cgId`, `courseDescription`, `createdBy`) VALUES('$course->academic', 
             '$course->semester', '$course->course_name', '$course->course_code', '$course->cg_id',
             '$course->course_desc', '$course->created_by');";
+
+    return $sql;
+}
+
+function update_course_cmd(Course $course)
+{
+    $sql = "UPDATE course SET `academic`='$course->academic',`semester`='$course->semester',`courseName`='$course->course_name',`courseCode`='$course->course_code',`cgId`='$course->cg_id',`courseDescription`='$course->course_desc' WHERE id = '$course->id';";
+
+    return $sql;
+}
+
+function fetch_course_cmd($courseId)
+{
+    $sql = "SELECT c.id, c.academic, c.semester, c.courseName AS course_name,
+    c.courseCode as course_code, c.cgId as cg_id, c.courseDescription AS course_desc 
+    FROM course AS c WHERE c.id = '$courseId';";
 
     return $sql;
 }
