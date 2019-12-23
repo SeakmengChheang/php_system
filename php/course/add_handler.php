@@ -1,5 +1,6 @@
 <?php
 include_once '/system/php/function/check_profile.php';
+include_once '/system/php/function/check_staff_only.php';
 include_once '/system/php/model/course.php';
 include_once '/system/php/function/run_query.php';
 include_once '/system/php/function/sql_cmds.php';
@@ -8,6 +9,7 @@ if (session_status() == PHP_SESSION_NONE)
     session_start();
 
 check_profile();
+check_staff_only();
 
 if (isset($_POST["submit"])) {
     $course = new Course();

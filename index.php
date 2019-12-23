@@ -13,13 +13,13 @@ check_profile();
 <head>
     <title>Home</title>
 
-    <link rel="stylesheet" href="css/template.css">
-    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="/system/css/template.css">
+    <link rel="stylesheet" href="/system/css/table.css">
 </head>
 
 <body>
 
-    <?php include 'html/header.html'; ?>
+    <?php include '/system/html/header.html'; ?>
 
 
     <!-- <div class="body">
@@ -27,7 +27,7 @@ check_profile();
     </div> -->
 
 
-    <?php include 'html/footer.html'; ?>
+    <?php include '/system/html/footer.html'; ?>
 
 </body>
 

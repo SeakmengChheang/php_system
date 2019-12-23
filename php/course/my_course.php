@@ -1,14 +1,48 @@
 <?php
 include_once '/system/php/function/check_profile.php';
+include_once '/system/php/function/run_query.php';
+include_once '/system/php/function/sql_cmds.php';
+include_once '/system/php/helper/enroll_course_helper.php';
+
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
 
 check_profile();
+
+$id = $_SESSION['profile']['id'];
+if (isset($_GET['keyword']) && isset($_GET["option"])) {
+    $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
+
+    if ($_SESSION['profile']['role'] == 'student')
+        $sql_cids = fetch_student_enrolled_courseIds_cmd($id);
+    else
+        $sql_cids = fetch_staff_created_courseIds_cmd($id);
+
+    $c_ids = concat_ids(get_num($sql_cids));
+
+    $sql .= " AND id IN ($c_ids);";
+    echo $sql;
+
+    $res = get_assoc($sql);
+} else {
+    if ($_SESSION['profile']['role'] == 'student') {
+        //fetch enrolled courses
+        $sql = fetch_student_enrolled_courses_cmd($id);
+    } else {
+        //fetch created courses
+        $sql = fetch_staff_created_courses_cmd($id);
+    }
+    
+    $res = get_assoc($sql);
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>My Course</title>
+    <title>My Courses</title>
 
     <link rel="stylesheet" href="/system/css/table.css">
     <link rel="stylesheet" href="/system/css/template.css">
@@ -18,13 +52,14 @@ check_profile();
     <?php include '/system/html/header.html' ?>
 
     <div class="content">
+
         <div class="button-bar">
-            <button><?php
-                    $_SESSION['profile']['role'] == 'student'
-                        ? print 'My Course'
-                        : print 'Added Courses'; ?></button>
-            <button>View All</button>
+            <button>
+                <a href="/system/php/course/view_all.php">View All</a>
+            </button>
         </div>
+
+        <?php include_once '/system/html/search_bar.html'; ?>
 
         <table>
             <thead>
@@ -44,27 +79,13 @@ check_profile();
 
             <tbody>
                 <?php
-                require_once '/system/php/function/run_query.php';
-                include_once '/system/php/function/sql_cmds.php';
-
-                $id = $_SESSION['profile']['id'];
-                if ($_SESSION['profile']['role'] == 'student') {
-                    //fetch enrolled courses
-                    $sql = fetch_student_enrolled_courses_cmd($id);
-                } else {
-                    //fetch created courses
-                    $sql = fetch_staff_created_courses_cmd($id);
-                }
-
-                $res = get_assoc($sql);
-
                 foreach ($res as $course) {
                     echo "<tr>";
                     foreach ($course as $key => $val) {
                         if ($key == 'id') {
                             $course_id = $val;
                             continue;
-                        } else
+                        } else if ($key != 'created_by')
                             echo "<td>$val</td>";
                     }
 

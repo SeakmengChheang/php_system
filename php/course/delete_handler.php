@@ -1,9 +1,14 @@
 <?php
 include_once '/system/php/function/run_query.php';
 include_once '/system/php/function/open_db.php';
+include_once '/system/php/function/check_profile.php';
+include_once '/system/php/function/check_staff_only.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
+
+check_profile();
+check_staff_only();
 
 $course_id = htmlentities($_GET['course_id']);
 $stu_id = $_SESSION['profile']['id'];

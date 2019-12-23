@@ -2,27 +2,11 @@
 include_once '/system/php/function/sql_cmds.php';
 include_once '/system/php/function/run_query.php';
 include_once '/system/php/function/check_profile.php';
+include_once '/system/php/helper/enroll_course_helper.php';
 
 check_profile();
 
-function fetch_courseIds($id)
-{
-    $id = $_SESSION['profile']['id'];
-    $sql = fetch_student_enrolled_courseIds_cmd($id);
-
-    $res = get_num($sql);
-
-    return $res;
-}
-
-$res = fetch_courseIds($_SESSION['profile']['id']);
-
-$cIds = "";
-foreach ($res as $a)
-    foreach ($a as $val)
-        $cIds .= $val . ',';
-
-$cIds = substr($cIds, 0, -1);
+$cIds = concat_ids(get_num(fetch_student_enrolled_courseIds_cmd($id)));
 
 $sql = fetch_student_not_yet_enroll_courses($cIds);
 
@@ -46,6 +30,8 @@ $courses = get_assoc($sql);
     <?php include_once '/system/html/header.html' ?>
 
     <div class="content">
+        <?php include_once '/system/html/search_bar.html'; ?>
+
         <table>
             <thead>
                 <th>Academic</th>
@@ -69,7 +55,7 @@ $courses = get_assoc($sql);
                         if ($key == 'id') {
                             $course_id = $val;
                             continue;
-                        } else
+                        } else if ($key != 'created_by')
                             echo "<td>$val</td>";
                     }
                     echo "<td><a href=\"/system/php/course/enroll_handler.php?course_id=$course_id\">Enroll</a></td>";

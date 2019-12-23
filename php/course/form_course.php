@@ -1,27 +1,35 @@
 <?php
-include_once '/system/php/function/check_profile.php';
 include_once '/system/php/function/sql_cmds.php';
 include_once '/system/php/function/run_query.php';
+include_once '/system/php/function/check_profile.php';
+include_once '/system/php/function/check_staff_only.php';
+
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
 
 check_profile();
+check_staff_only();
 
 if (!isset($_GET['action']))
     header("location: /system/course_handler.php");
 
 if ($_GET['action'] == 'edit') {
+    //!
+    //TODO: fix years go back to original when failed
     if (!isset($_GET['course_id']))
         header("location: /system/course_handler.php");
 
-    $sql = fetch_course_cmd($_GET['course_id']);
+    $course_id = htmlspecialchars($_GET["course_id"]);
+    $sql = fetch_course_cmd($course_id);
 
     $c = get_assoc($sql);
 
     //There's only one course from db
     $_SESSION['course'] = $c[0];
 } elseif ($_GET['action'] == 'add') {
-    //TODO: What to do?
+    //?: What to do?
 } else {
-    header("location: /system/course_handler.php");
+    header("location: /system/php/error_page.php");
 }
 
 //To select current year

@@ -6,7 +6,7 @@
 
     function check_profile(){
         if(!isset($_SESSION['profile'])) {
-            header("location: login.php");
+            header("location: /system/login.php");
         }
     }
 ?>
