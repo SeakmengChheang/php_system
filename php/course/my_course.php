@@ -1,8 +1,8 @@
 <?php
-include_once '/system/php/function/check_profile.php';
-include_once '/system/php/function/run_query.php';
-include_once '/system/php/function/sql_cmds.php';
-include_once '/system/php/helper/enroll_course_helper.php';
+include_once '../function/check_profile.php';
+include_once '../function/run_query.php';
+include_once '../function/sql_cmds.php';
+include_once '../helper/enroll_course_helper.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -44,22 +44,22 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
 <head>
     <title>My Courses</title>
 
-    <link rel="stylesheet" href="/system/css/table.css">
-    <link rel="stylesheet" href="/system/css/template.css">
+    <link rel="stylesheet" href="../../css/table.css">
+    <link rel="stylesheet" href="../../css/template.css">
 </head>
 
 <body>
-    <?php include '/system/html/header.html' ?>
+    <?php include '../../html/header.html' ?>
 
     <div class="content">
 
         <div class="button-bar">
             <button>
-                <a href="/system/php/course/view_all.php">View All</a>
+                <a href="view_all.php">View All</a>
             </button>
         </div>
 
-        <?php include_once '/system/html/search_bar.html'; ?>
+        <?php include_once '../../html/search_bar.html'; ?>
 
         <table>
             <thead>
@@ -70,10 +70,11 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
                 <th>Course Group</th>
                 <th>Course Description</th>
                 <th>Author</th>
-                <th>Action 1</th>
+                
                 <?php
                 if ($_SESSION['profile']['role'] == 'staff')
-                    echo "<th>Action 2</th>";
+                    echo "<th>Action 1</th>
+                    <th>Action 2</th>";
                 ?>
             </thead>
 
@@ -93,19 +94,19 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
                         $file_name = 'unenroll_handler';
                         $action_name = "Unenroll";
                     } else {
-                        echo "<td><a href=\"/system/php/course/form_course.php?action=edit&course_id=$course_id\">Edit</a></td>";
+                        echo "<td><a href=\"form_course.php?action=edit&course_id=$course_id\">Edit</a></td>";
                         $file_name = 'delete_handler';
                         $action_name = 'Delete';
                     }
 
-                    echo "<td><a href=\"/system/php/course/$file_name.php?course_id=$course_id\">$action_name</a></td>";
+                    echo "<td><a href=\"$file_name.php?course_id=$course_id\">$action_name</a></td>";
                     echo "</tr>";
                 }
                 ?>
             </tbody>
         </table>
 
-        <form action="/system/php/course/<?php $_SESSION['profile']['role'] == 'student'
+        <form action="<?php $_SESSION['profile']['role'] == 'student'
                                                 ? print "enroll_course.php"
                                                 : print "form_course.php?action=add" ?>" method="POST">
             <button type="submit" name="submit">
@@ -115,13 +116,13 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
                         ? print "Enroll Course"
                         : print "Add Course";
                 } else
-                    include_once '/system/php/error_page.php';
+                    include_once '../error_page.php';
                 ?>
             </button>
         </form>
     </div>
 
-    <?php include '/system/html/footer.html' ?>
+    <?php include '../../html/footer.html' ?>
 
 </body>
 
