@@ -42,7 +42,7 @@ function fetch_all_courses_cmd()
 
 function add_course_cmd($course)
 {
-    $sql = "INSERT INTO course(`academic`, `semester`, `courseName`, `courseCode`, `cgId`, `courseDescription`, `createdBy`) VALUES('$course->academic', '$course->semester', '$course->course_name', '$course->course_code', '$course->cg_id', '$course->course_desc', '$course->created_by');";
+    $sql = "INSERT INTO course(`academic`, `semester`, `courseName`, `courseCode`, `cgId`, `courseDescription`, `createdBy`) VALUES('$course->academic', '$course->semester', '$course->course_name', '$course->course_code', '$course->cg_id', '$course->course_desc', '$course->created_by')";
 
     return $sql;
 }
@@ -64,6 +64,18 @@ function fetch_course_cmd($courseId)
 function search_by_cmd($keyword, $field)
 {
     $sql = "SELECT * FROM course_view WHERE `$field` LIKE '%$keyword%'";
+
+    return $sql;
+}
+
+function search_all_fields($keyword) {
+    $sql = "SELECT * FROM course_view WHERE (`academic` LIKE '%$keyword%'
+        OR `semester` LIKE '%$keyword%'
+        OR `course_name` LIKE '%$keyword%'
+        OR `course_code` LIKE '%$keyword%'
+        OR `course_group` LIKE '%$keyword%'
+        OR `course_desc` LIKE '%$keyword%'
+        OR `author` LIKE '%$keyword%')";
 
     return $sql;
 }

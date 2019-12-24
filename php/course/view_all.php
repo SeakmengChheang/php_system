@@ -1,7 +1,27 @@
 <?php
-include_once '../function/check_profile.php';
+require_once '../function/check_profile.php';
+require_once '../function/run_query.php';
+require_once '../function/sql_cmds.php';
 
 check_profile();
+
+//When user searches
+if (isset($_GET['keyword']) && isset($_GET["option"])) {
+    $option = htmlspecialchars($_GET["option"]);
+    $keyword = htmlspecialchars($_GET["keyword"]);
+    if ($option == 'all')
+        $sql = search_all_fields($keyword);
+    else
+        $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
+
+    //echo $sql;
+}
+//In normal view
+else {
+    $sql = fetch_all_courses_cmd();
+}
+
+$res = get_assoc($sql);
 ?>
 
 <!DOCTYPE html>
@@ -15,12 +35,12 @@ check_profile();
 </head>
 
 <body>
-    <?php include '../../html/header.html' ?>
+    <?php include_once '../../html/header.html' ?>
 
     <div class="content">
         <div class="button-bar">
             <button>
-                <a href="php/course/my_course.php">
+                <a href="my_course.php">
                     <?php
                     $_SESSION['profile']['role'] == 'student'
                         ? print 'My Courses'
@@ -29,7 +49,7 @@ check_profile();
             </button>
         </div>
 
-        <?php include_once '../../html/search_bar.html'; ?>
+        <?php include_once 'search_bar.php'; ?>
 
         <table>
             <thead>
@@ -40,22 +60,10 @@ check_profile();
                 <th>Course Group</th>
                 <th>Course Description</th>
                 <th>Author</th>
-                <!-- <th>Action 1</th>
-                <?php
-                if ($_SESSION['profile']['role'] == 'staff')
-                    echo "<th>Action 2</th>";
-                ?> -->
             </thead>
 
             <tbody>
                 <?php
-                require_once '../function/run_query.php';
-                include_once '../function/sql_cmds.php';
-
-                $sql = fetch_all_courses_cmd();
-
-                $res = get_assoc($sql);
-
                 foreach ($res as $course) {
                     echo "<tr>";
                     foreach ($course as $key => $val)
@@ -69,22 +77,19 @@ check_profile();
         </table>
 
         <form action="<?php $_SESSION['profile']['role'] == 'student'
-                                                ? print "enroll_course.php"
-                                                : print "form_course.php?action=add" ?>" method="POST">
+                            ? print "enroll_course.php"
+                            : print "form_course.php?action=add" ?>" method="POST">
             <button type="submit" name="submit">
                 <?php
-                if (isset($_SESSION['profile']['role'])) {
-                    $_SESSION['profile']['role'] == 'student'
-                        ? print "Enroll Course"
-                        : print "Add Course";
-                } else
-                    include_once '../error_page.php';
+                $_SESSION['profile']['role'] == 'student'
+                    ? print "Enroll Course"
+                    : print "Add Course";
                 ?>
             </button>
         </form>
     </div>
 
-    <?php include '../../html/footer.html' ?>
+    <?php include_once '../../html/footer.html' ?>
 
 </body>
 

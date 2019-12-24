@@ -10,21 +10,31 @@ if (session_status() == PHP_SESSION_NONE)
 check_profile();
 
 $id = $_SESSION['profile']['id'];
-if (isset($_GET['keyword']) && isset($_GET["option"])) {
-    $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
 
+//When user searches
+if (isset($_GET['keyword']) && isset($_GET["option"])) {
+    //Fetch their courses ids whether added courses or enrolled courses
+    //To create a range to search in
     if ($_SESSION['profile']['role'] == 'student')
         $sql_cids = fetch_student_enrolled_courseIds_cmd($id);
     else
         $sql_cids = fetch_staff_created_courseIds_cmd($id);
 
     $c_ids = concat_ids(get_num($sql_cids));
+    //
+
+    $option = htmlspecialchars($_GET["option"]);
+    $keyword = htmlspecialchars($_GET["keyword"]);
+    if ($option == 'all') {
+        $sql = search_all_fields($keyword);
+    } else
+        $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
 
     $sql .= " AND id IN ($c_ids);";
-    echo $sql;
-
-    $res = get_assoc($sql);
-} else {
+    //echo $sql;
+}
+//In normal view
+else {
     if ($_SESSION['profile']['role'] == 'student') {
         //fetch enrolled courses
         $sql = fetch_student_enrolled_courses_cmd($id);
@@ -32,9 +42,9 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
         //fetch created courses
         $sql = fetch_staff_created_courses_cmd($id);
     }
-    
-    $res = get_assoc($sql);
 }
+
+$res = get_assoc($sql);
 
 ?>
 
@@ -49,7 +59,7 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
 </head>
 
 <body>
-    <?php include '../../html/header.html' ?>
+    <?php include_once '../../html/header.html' ?>
 
     <div class="content">
 
@@ -59,7 +69,7 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
             </button>
         </div>
 
-        <?php include_once '../../html/search_bar.html'; ?>
+        <?php include_once 'search_bar.php'; ?>
 
         <table>
             <thead>
@@ -70,11 +80,10 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
                 <th>Course Group</th>
                 <th>Course Description</th>
                 <th>Author</th>
-                
+                <th>Action 1</th>
                 <?php
                 if ($_SESSION['profile']['role'] == 'staff')
-                    echo "<th>Action 1</th>
-                    <th>Action 2</th>";
+                    echo "<th>Action 2</th>";
                 ?>
             </thead>
 
@@ -95,6 +104,7 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
                         $action_name = "Unenroll";
                     } else {
                         echo "<td><a href=\"form_course.php?action=edit&course_id=$course_id\">Edit</a></td>";
+
                         $file_name = 'delete_handler';
                         $action_name = 'Delete';
                     }
@@ -107,8 +117,8 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
         </table>
 
         <form action="<?php $_SESSION['profile']['role'] == 'student'
-                                                ? print "enroll_course.php"
-                                                : print "form_course.php?action=add" ?>" method="POST">
+                            ? print "enroll_course.php"
+                            : print "form_course.php?action=add" ?>" method="POST">
             <button type="submit" name="submit">
                 <?php
                 if (isset($_SESSION['profile']['role'])) {
@@ -116,13 +126,13 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
                         ? print "Enroll Course"
                         : print "Add Course";
                 } else
-                    include_once '../error_page.php';
+                    header("location: ../error_page.php");
                 ?>
             </button>
         </form>
     </div>
 
-    <?php include '../../html/footer.html' ?>
+    <?php include_once '../../html/footer.html' ?>
 
 </body>
 

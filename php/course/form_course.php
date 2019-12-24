@@ -1,23 +1,23 @@
 <?php
-include_once '/system/php/function/sql_cmds.php';
-include_once '/system/php/function/run_query.php';
-include_once '/system/php/function/check_profile.php';
-include_once '/system/php/function/check_staff_only.php';
+include_once '../function/sql_cmds.php';
+include_once '../function/run_query.php';
+include_once '../function/check_profile.php';
+include_once '../function/check_role.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 
 check_profile();
-check_staff_only();
+staff_only_page();
 
 if (!isset($_GET['action']))
-    header("location: /system/course_handler.php");
+    header("location: course_handler.php");
 
 if ($_GET['action'] == 'edit') {
     //!
     //TODO: fix years go back to original when failed
     if (!isset($_GET['course_id']))
-        header("location: /system/course_handler.php");
+        header("location: course_handler.php");
 
     $course_id = htmlspecialchars($_GET["course_id"]);
     $sql = fetch_course_cmd($course_id);
@@ -29,7 +29,7 @@ if ($_GET['action'] == 'edit') {
 } elseif ($_GET['action'] == 'add') {
     //?: What to do?
 } else {
-    header("location: /system/php/error_page.php");
+    header("location: ../error_page.php");
 }
 
 //To select current year
@@ -54,14 +54,14 @@ $year = date("Y");
         }
     </style>
 
-    <link rel="stylesheet" href="/system/css/template.css">
+    <link rel="stylesheet" href="../../css/template.css">
 </head>
 
 <body>
-    <?php include_once '/system/html/header.html'; ?>
+    <?php include_once '../../html/header.html'; ?>
 
     <div class="content">
-        <form action="/system/php/course/<?php $_GET['action'] == 'add' ? print 'add_handler.php' : print "edit_handler.php?course_id={$_SESSION['course']['id']}" ?>" method="post">
+        <form action="<?php $_GET['action'] == 'add' ? print 'add_handler.php' : print "edit_handler.php?course_id={$_SESSION['course']['id']}" ?>" method="post">
             <fieldset>
                 <legend>Course Info</legend>
                 <p>Academic Years*</p>
@@ -95,7 +95,7 @@ $year = date("Y");
                 <p>Course Group*</p>
                 <select name="cg_id" required>
                     <?php
-                    include_once '/system/php/model/course_group.php';
+                    include_once '../model/course_group.php';
                     if (isset($_SESSION['course']['cg_id'])) $cgId = $_SESSION['course']['cg_id'];
                     for ($i = 1; $i <= 4; ++$i) {
                         $selected = ($cgId == $i ? "selected" : "");
@@ -115,7 +115,7 @@ $year = date("Y");
         </form>
     </div>
 
-    <?php include '/system/html/footer.html'; ?>
+    <?php include '../../html/footer.html'; ?>
 
 
     <?php
