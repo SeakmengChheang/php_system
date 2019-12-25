@@ -1,15 +1,67 @@
 <?php
-include "php/function/check_profile.php";
+    include "php/function/check_profile.php";
+    include "php/function/run_query.php";
+    
+    
+    if (session_status() == PHP_SESSION_NONE)
+        session_start();
 
-if (session_status() == PHP_SESSION_NONE)
-    session_start();
+    check_profile();
 
-check_profile();
+    $profile = $_SESSION["profile"];
+
+    
+?>
+
+<script>
+    function change_sort() {
+        var header = "";
+        <?php 
+            $sql = ["SELECT * FROM user ORDER BY id","SELECT * FROM user ORDER BY username","SELECT * FROM user ORDER BY fullName","SELECT * FROM user ORDER BY role"];
+            function for_each($sql){
+                $datas = get_assoc($sql);
+                echo "<tr>
+                <th>ID</th>
+                <th>USERNAME</th>
+                <th>FULL NAME</th>
+                <th>ROLE</th>
+                </tr>";
+                foreach($datas as $data){
+                    echo "<tr>
+                    <td>".$data["id"]."</td>
+                    <td>".$data["username"]."</td>
+                    <td>".$data["fullName"]."</td>
+                    <td>".$data["role"]."</td>
+                    </tr>";
+                }
+            }
+        ?>
+        if(document.getElementById("sortby").selectedIndex == "0"){
+            document.getElementById("sortby-container").innerHTML =  `<?php for_each($sql[0]) ?>`;
+        }
+        else if(document.getElementById("sortby").selectedIndex == "1"){
+            document.getElementById("sortby-container").innerHTML =  `<?php for_each($sql[1]) ?>`;
+        }
+        else if(document.getElementById("sortby").selectedIndex == "2"){
+            document.getElementById("sortby-container").innerHTML = `<?php for_each($sql[2]) ?>`;
+        }
+        else if(document.getElementById("sortby").selectedIndex == "3"){
+            document.getElementById("sortby-container").innerHTML = `<?php for_each($sql[3]) ?>`;
+        }
+    }
+</script>
+
+<?php
+   if($profile["role"] == "Staff"){
+        $datas = get_assoc("SELECT * FROM user ORDER BY id");
+   }
+   else{
+        $datas = get_assoc("SELECT * FROM user WHERE role = 'Staff' ORDER BY id ");
+   }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Contact</title>
 
@@ -19,62 +71,52 @@ check_profile();
 
 <body>
     <?php include 'html/header.html' ?>
-
-    <div class="content">
-        <div class="button-bar">
-            <button>View All</button>
-            <button><?php if (isset($_SESSION['profile']['role']))
-                        print "View All";
-                    else include 'php/error_page.php'; ?></button>
-        </div>
-
-        <table>
-            <thead>
+    <div>
+        <form action="">
+            <input type="text">
+            <select name="" id="">
+                <option value="">NAME</option>
+                <option value="">USERNAME</option>
+                <option value="">ANY</option>
+            </select>
+            <button>SEARCH</button>
+        </form>
+        sortby:
+        <form onchange="change_sort()" action="">
+            <select name="" id="sortby">
+                <option>ID</option>
+                <option>USERNAME</option>
+                <option>NAME</option>
+                <?php if($profile["role"] == "Staff") echo "<option>ROLE</option>"; ?>
+            </select>
+        </form>
+        <!-- <button>SORT</button> -->
+    </div>
+    <div>
+        <table id = "sortby-container">
+            <tr>
                 <th>ID</th>
-                <th>Full Name</th>
-                <th>Role</th>
-                <?php
-                if (isset($_SESSION['profile']['role'])) {
-                    if ($_SESSION['profile']['role'] == 'staff')
-                        echo "<th>Position</th>";
+                <th>USERNAME</th>
+                <th>FULL NAME</th>
+                <th>ROLE</th>
+            </tr>
+            <?php
+                foreach($datas as $data){
+                    echo "<tr>
+                    <td>".$data["id"]."</td>
+                    <td>".$data["username"]."</td>
+                    <td>".$data["fullName"]."</td>
+                    <td>".$data["role"]."</td>
+                    </tr>";
                 }
-                ?>
-
-            </thead>
-
-            <tbody>
-                <?php
-                include_once 'php/function/run_query.php';
-
-                if (isset($_SESSION['profile']['role'])) {
-                    //IF role is staff then also fetch POSITION
-                    $sql = "SELECT user.id, user.fullName, user.role" .
-                        ($_SESSION['profile']['role'] == 'staff'
-                            ? ", staff.position FROM user LEFT OUTER JOIN staff ON user.id = staff.id ORDER BY staff.position"
-                            : " FROM user WHERE user.role = 'student' ORDER BY user.fullName");
-
-                    $res = get_num($sql);
-
-                    foreach ($res as $user) {
-                        echo "<tr>";
-                        foreach ($user as $val) {
-                            if ($val == '')
-                                echo "<td>N/A</td>";
-                            else
-                                echo "<td>$val</td>";
-                        }
-                        echo "</tr>";
-                    }
-                } else {
-                    include 'php/error_page.php';
-                }
-                ?>
-            </tbody>
+            ?>
         </table>
+        <p id="blah"></p>
     </div>
 
-    <?php include 'html/footer.html' ?>
+    
 
+    <?php include 'html/footer.html' ?>
 </body>
 
 </html>

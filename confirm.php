@@ -7,7 +7,6 @@
 
 <?php
 
-    echo "<input type = 'hidden' name = >";
     echo "<script>con_firm('blah');</script>";
 
 ?>

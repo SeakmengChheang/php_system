@@ -1,3 +1,4 @@
+<script src = "js/validate.js"></script>
 <?php
     include "message.php";
 ?>
@@ -12,13 +13,17 @@
 </head>
 <body>
     <div>
-        <form action="register.php" method = "POST">
-            <p>username:<input type="text" name="username" required></p>
-            <p>password:<input type="password" name = "password" required></p>
-            <p>confirm password:<input type="password" name="cpassword" required></p>
-            <p>fullname:<input type="text" name="fullname" required></p>
-            <p>role:<input type="radio" name = "role" value="student" required>Student
-            <input type="radio" name = "role" value="staff" required>Staff</p>
+        <form name="myform" action="register.php" method = "POST" onsubmit ="return (validate('myform','username','USERNAME')&&
+                                                                                    validate('myform','password','PASSWORD')&&
+                                                                                    validate('myform','cpassword','CONFIRM PASSWORD')&&
+                                                                                    validate('myform','fullname','FULL NAME')&&
+                                                                                    validate('myform','role','ROLE'))">
+            <p>username:<input type="text" name="username" ></p>
+            <p>password:<input type="password" name = "password" ></p>
+            <p>confirm password:<input type="password" name="cpassword" ></p>
+            <p>fullname:<input type="text" name="fullname" ></p>
+            <p>role:<input type="radio" name = "role" value="student" >Student
+            <input type="radio" name = "role" value="staff">Staff</p>
             <button type = "submit">Sign Up</button>
         </form>
     </div>

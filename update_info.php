@@ -14,7 +14,7 @@
         $username = $data["username"];
         $sql = "UPDATE user SET fullName = '$full_name' WHERE username = '$username'";
         run_query($sql);
-        $_SESSION["message"] = "SCESSFUL";
+        $_SESSION["message"] = "SCCESSFUL";
         $data["fullName"] = $full_name;
         $_SESSION["profile"] = $data;
     }
