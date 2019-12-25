@@ -56,7 +56,6 @@
 </script>
 
 <?php
-    include "role_output.php";
     if($profile["role"] == "staff"){
         $datas = get_assoc("SELECT * FROM user ORDER BY id");
     }

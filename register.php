@@ -38,7 +38,6 @@
         $_SESSION["message"] = "FULLNAME INVALID \\nPLEASE INPUT CHARACTERS ONLY";
         header("location: sign_up.php");
     }
-    
     else{
         $sql = "SELECT * FROM user WHERE username = '$username'";
         $data = get_assoc($sql);
