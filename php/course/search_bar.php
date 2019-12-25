@@ -3,12 +3,10 @@ $options = ['all' => 'All', 'academic' => 'Academic', 'semester' => 'Semester', 
 ?>
 
 <script>
-
     function sort_by_onchange(e) {
         console.log("Hello");
         document.getElementById('submit').click();
     }
-
 </script>
 
 <div class="form">
