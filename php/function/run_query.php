@@ -1,6 +1,6 @@
 <?php
 
-include "php/function/open_db.php";
+include_once "php/function/open_db.php";
 
 function run_query($sql)
 {
