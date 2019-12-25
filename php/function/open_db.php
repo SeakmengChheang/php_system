@@ -1,7 +1,7 @@
 <?php
     
     function open_db() {
-        return mysqli_connect("localhost", "meng", "meng", "system");
+        return mysqli_connect("localhost", "root", "", "system");
     }
 
     function open_mysqli() {

@@ -8,6 +8,7 @@
             $variable = $_GET["$variable"];
         }
         $variable = stripslashes($variable);
+        $variable = trim($variable);
         return $variable;
     }
 

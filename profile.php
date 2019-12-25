@@ -24,7 +24,7 @@
             <div class="div2-1">
                 <p class="info">:<?php echo $data["username"]?></p>
                 <p class="info">:<?php echo $data["fullName"]?></p>
-                <p class="info">:<?php echo $data["role"]?></p>
+                <p class="info">:<?php $data["role"][0] = 'S'; echo $data["role"]; $data["role"][0] = 's';?></p>
             </div>
             <button>EDIT</button>
             </fieldset>`;
@@ -40,7 +40,7 @@
                 <div class="div2-1">
                     <p>:<?php echo $data["username"]?></p>
                     <p>: <input type="text" placeholder="Full Name" name = "full_name"></p>
-                    <p>:<?php echo $data["role"]?></p>
+                    <p>:<?php $data["role"][0] = 'S'; echo $data["role"]; $data["role"][0] = 's';?></p>
                 </div>
                 <button type = "submit">UPDATE</button>
             </form>
@@ -119,7 +119,7 @@
             <div class="div2-1">
                 <p class="info">:<?php echo $data["username"]?></p>
                 <p class="info">:<?php echo $data["fullName"]?></p>
-                <p class="info">:<?php echo $data["role"]?></p>
+                <p class="info">:<?php $data["role"][0] = 'S'; echo $data["role"]; $data["role"][0] = 's';?></p>
             </div>
             <button>EDIT</button>
         </fieldset>
@@ -137,7 +137,7 @@
                 <div class="div2-1">
                     <p>:<?php echo $data["username"]?></p>
                     <p>: <input type="text" placeholder="Full Name" name = "full_name"></p>
-                    <p>:<?php echo $data["role"]?></p>
+                    <p>:<?php $data["role"][0] = 'S'; echo $data["role"]; $data["role"][0] = 's';?></p>
                 </div>
                 <button type = "submit">UPDATE</button>
             </form>
