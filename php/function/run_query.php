@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<< HEAD
 include_once "php/function/open_db.php";
+=======
+include "open_db.php";
+>>>>>>> 3decc60dd997444f06076ee247c81ed5ff740196
 
 function run_query($sql)
 {
@@ -9,6 +13,8 @@ function run_query($sql)
     $result = mysqli_query($link, $sql);
 
     $link->close();
+
+    return $result;
 }
 
 function get_assoc($sql)

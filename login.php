@@ -2,6 +2,7 @@
 
 <?php
     session_start();
+    echo "Hello";
     include "message.php";
     if(isset($_SESSION['profile'])) {
         session_destroy();
@@ -9,7 +10,7 @@
         if(isset($_POST["username"]) && isset($_POST["password"])){
             // session_start();
             include "php/function/run_query.php";
-            include "php/function/get_value.php";    
+            include "php/function/get_value.php";
             
             $username = get_value("username" , "POST");
             $password = get_value("password" , "POST");        

@@ -1,8 +1,7 @@
 .footer {
     color: darkgoldenrod;
     width: 100%;
-    display: inline-block;
-    position: absolute;
+    position: fixed;
     bottom: 0;
 }
 

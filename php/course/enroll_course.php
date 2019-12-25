@@ -1,70 +1,100 @@
 <?php
-include_once 'php/function/sql_cmds.php';
-include_once 'php/function/db_get.php';
+include_once '../function/sql_cmds.php';
+include_once '../function/run_query.php';
+include_once '../function/check_profile.php';
+include_once '../helper/enroll_course_helper.php';
+include_once '../function/check_role.php';
 
-function fetch_courseIds($id)
-{
-    $id = $_SESSION['profile']['id'];
-    $sql = fetch_student_enrolled_courseIds_cmd($id);
+check_profile();
+student_only_page();
 
-    $res = get_num($sql);
+//Fetch the id of enrolled courses
+$c_ids = concat_ids(get_num(fetch_student_enrolled_courseIds_cmd($_SESSION["profile"]["id"])));
 
-    return $res;
+//When user searches
+if (isset($_GET['keyword']) && isset($_GET["option"])) {
+    $option = htmlspecialchars($_GET["option"]);
+    $keyword = htmlspecialchars($_GET["keyword"]);
+    if ($option == 'all') {
+        $sql = search_all_fields($keyword);
+    } else
+        $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
+
+    $sql .= " AND id NOT IN ($c_ids);";
+
+} 
+//In normal view
+else {
+    $sql = fetch_student_not_yet_enroll_courses($c_ids);
 }
-
-if (session_status() == PHP_SESSION_NONE)
-    session_start();
-
-$res = fetch_courseIds($_SESSION['profile']['id']);
-
-$cIds = "";
-foreach ($res as $a)
-    foreach ($a as $val)
-        $cIds .= $val . ',';
-
-$cIds = substr($cIds, 0, -1);
-
-$sql = fetch_student_not_yet_enroll_courses($cIds);
+//echo $sql;
 
 $courses = get_assoc($sql);
 ?>
 
-<table>
-    <thead>
-        <th>Academic</th>
-        <th>Semester</th>
-        <th>Course Name</th>
-        <th>Course Code</th>
-        <th>Course Group</th>
-        <th>Course Description</th>
-        <th>Author</th>
-        <th>Action</th>
-    </thead>
+<!DOCTYPE html>
+<html lang="en">
 
-    <tbody>
-        <?php
-        include_once 'php/function/db_get.php';
-        include_once 'php/function/sql_cmds.php';
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Enroll Course</title>
 
-        if (isset($_SESSION['profile']['role'])) {
-            foreach ($courses as $course) {
-                echo "<tr>";
-                foreach ($course as $key => $val) {
-                    if ($key == 'id') {
-                        $course_id = $key;
-                        continue;
-                    } else
-                        echo "<td>$val</td>";
+    <link rel="stylesheet" href="../../css/template.css">
+    <link rel="stylesheet" href="../../css/table.css">
+</head>
+
+<body>
+    <?php include_once '../../html/header.html' ?>
+
+    <div class="content">
+        <div class="button-bar">
+            <button>
+                <a href="my_course.php">
+                    <?php
+                    $_SESSION['profile']['role'] == 'student'
+                        ? print 'My Courses'
+                        : print 'My Added Courses'; ?>
+                </a>
+            </button>
+        </div>
+
+        <?php include_once 'search_bar.php'; ?>
+
+        <table>
+            <thead>
+                <th>Academic</th>
+                <th>Semester</th>
+                <th>Course Name</th>
+                <th>Course Code</th>
+                <th>Course Group</th>
+                <th>Course Description</th>
+                <th>Author</th>
+                <th>Action</th>
+            </thead>
+
+            <tbody>
+                <?php
+                foreach ($courses as $course) {
+                    echo "<tr>";
+                    foreach ($course as $key => $val) {
+                        if ($key == 'id') {
+                            $course_id = $val;
+                            continue;
+                        } else if ($key != 'created_by')
+                            echo "<td>$val</td>";
+                    }
+                    echo "<td><a href=\"enroll_handler.php?course_id=$course_id\">Enroll</a></td>";
+                    echo "</tr>";
                 }
-                echo "<td><a href=\"php/course/enroll_handler.php?course_id=$course_id\">Enroll</a></td>";
-                echo "</tr>";
-            }
-        } else {
-            include_once 'php/error_page.php';
-        }
+                ?>
 
+            </tbody>
+        </table>
+    </div>
 
-        ?>
+    <?php include_once '../../html/footer.html' ?>
+</body>
 
-    </tbody>
-</table>
+</html>
