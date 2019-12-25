@@ -30,8 +30,9 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
     } else
         $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
 
-    $sql .= " AND id IN ($c_ids);";
+    $sql .= " AND id IN ($c_ids)";
     //echo $sql;
+
 }
 //In normal view
 else {
@@ -42,6 +43,14 @@ else {
         //fetch created courses
         $sql = fetch_staff_created_courses_cmd($id);
     }
+}
+
+if(isset($_GET["sort_by"])) {
+    $sort_by = htmlspecialchars($_GET["sort_by"]);
+    $sql .= " ORDER BY $sort_by";
+}
+else {
+    $sql .= " ORDER BY academic";
 }
 
 $res = get_assoc($sql);

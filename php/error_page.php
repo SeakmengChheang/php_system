@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Error Page</title>
 
-    <link rel="stylesheet" href="/system/css/template.css">
+    <link rel="stylesheet" href="../css/template.css">
 </head>
 
 <body>
-    <?php include '/system/html/header.html'; ?>
+    <?php include '../html/header.html'; ?>
 
     <div class="content">
         <center>
@@ -23,7 +23,7 @@
         </center>
     </div>
 
-    <?php include '/system/html/footer.html'; ?>
+    <?php include '../html/footer.html'; ?>
 </body>
 
 </html>
