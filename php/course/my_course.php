@@ -32,7 +32,6 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
 
     $sql .= " AND id IN ($c_ids)";
     //echo $sql;
-
 }
 //In normal view
 else {
@@ -62,6 +61,14 @@ $res = get_assoc($sql);
 
 <head>
     <title>My Courses</title>
+
+    <script>
+        function confirmation(e) {
+            if(!confirm('Are you sure?')) {
+                e.preventDefault();
+            }
+        }
+    </script>
 
     <link rel="stylesheet" href="../../css/table.css">
     <link rel="stylesheet" href="../../css/template.css">
@@ -118,7 +125,7 @@ $res = get_assoc($sql);
                         $action_name = 'Delete';
                     }
 
-                    echo "<td><a href=\"$file_name.php?course_id=$course_id\">$action_name</a></td>";
+                    echo "<td><a href=\"$file_name.php?course_id=$course_id\" onclick=\"confirmation()\">$action_name</a></td>";
                     echo "</tr>";
                 }
                 ?>

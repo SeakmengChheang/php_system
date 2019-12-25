@@ -39,4 +39,16 @@ function get_num($sql)
     return $rtn;
 }
 
+function get_row($sql) {
+    $link = open_db();
+
+    $result = mysqli_query($link, $sql);
+
+    $rtn = mysqli_fetch_row($result);
+
+    $link->close();
+
+    return $rtn;
+}
+
 ?>

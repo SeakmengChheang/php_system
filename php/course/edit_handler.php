@@ -16,7 +16,7 @@ if (isset($_POST["submit"])) {
     $mysqli = open_mysqli();
     $course->id = $mysqli->real_escape_string($_GET['course_id']);
 
-    if (!Course::set_vals_and_validate($course, $_POST, $mysqli)) {
+    if (!Course::set_vals_and_validate($course, $_POST, $mysqli, 'edit')) {
         $_SESSION['course'] = (array) $course;
         header("location: form_course.php?action=edit&course_id=$course->id");
         $mysqli->close();

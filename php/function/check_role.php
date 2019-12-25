@@ -6,10 +6,10 @@ if(session_status() == PHP_SESSION_NONE){
 
 function staff_only_page() {
     if($_SESSION['profile']['role'] != 'staff')
-        header("location: ../error_page.php");
+        header("location: ../../index.php");
 }
 
 function student_only_page() {
     if($_SESSION['profile']['role'] != 'student')
-        header("location: ../error_page.php");
+        header("location: ../../index.php");
 }

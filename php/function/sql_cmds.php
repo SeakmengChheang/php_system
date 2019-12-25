@@ -26,9 +26,12 @@ function fetch_staff_created_courseIds_cmd($id) {
     return $sql;
 }
 
-function fetch_student_not_yet_enroll_courses($cIds)
+function fetch_student_not_yet_enroll_courses($str_c_ids)
 {
-    $sql = "SELECT * FROM course_view WHERE id NOT IN ($cIds)";
+    $sql = "SELECT * FROM course_view";
+
+    if($str_c_ids != '')
+        $sql .= " WHERE id NOT IN ($str_c_ids)";
 
     return $sql;
 }

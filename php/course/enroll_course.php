@@ -9,8 +9,7 @@ check_profile();
 student_only_page();
 
 //Fetch the id of enrolled courses
-$c_ids = concat_ids(get_num(fetch_student_enrolled_courseIds_cmd($_SESSION["profile"]["id"])));
-
+$str_c_ids = concat_ids(get_num(fetch_student_enrolled_courseIds_cmd($_SESSION["profile"]["id"])));
 //When user searches
 if (isset($_GET['keyword']) && isset($_GET["option"])) {
     $option = htmlspecialchars($_GET["option"]);
@@ -20,14 +19,22 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
     } else
         $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
 
-    $sql .= " AND id NOT IN ($c_ids);";
-
-} 
+    if ($str_c_ids != '')
+        $sql .= " AND id NOT IN ($str_c_ids)";
+}
 //In normal view
 else {
     $sql = fetch_student_not_yet_enroll_courses($c_ids);
 }
+echo $sql;
 //echo $sql;
+
+if (isset($_GET["sort_by"])) {
+    $sort_by = htmlspecialchars($_GET["sort_by"]);
+    $sql .= " ORDER BY $sort_by";
+} else {
+    $sql .= " ORDER BY academic";
+}
 
 $courses = get_assoc($sql);
 ?>

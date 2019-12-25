@@ -10,26 +10,29 @@ if (session_status() == PHP_SESSION_NONE)
 check_profile();
 staff_only_page();
 
-if (!isset($_GET['action']))
-    header("location: course_handler.php");
+// if (!isset($_GET['action']))
+//     header("location: ../../course_handler.php");
 
 if ($_GET['action'] == 'edit') {
-    //!
-    //TODO: fix years go back to original when failed
-    if (!isset($_GET['course_id']))
-        header("location: course_handler.php");
+    //There is no failed in editing before
+    //Then, fetch the data from db
+    if (!isset($_SESSION["course"])) {
+        if (!isset($_GET['course_id']))
+            header("location: course_handler.php");
 
-    $course_id = htmlspecialchars($_GET["course_id"]);
-    $sql = fetch_course_cmd($course_id);
+        $course_id = htmlspecialchars($_GET["course_id"]);
+        $sql = fetch_course_cmd($course_id);
 
-    $c = get_assoc($sql);
+        $course = get_assoc($sql);
+        print_r($course);
 
-    //There's only one course from db
-    $_SESSION['course'] = $c[0];
-} elseif ($_GET['action'] == 'add') {
-    //?: What to do?
-} else {
-    header("location: ../error_page.php");
+        //There's only one course from db
+        $_SESSION['course'] = $course[0];
+    }
+}
+//If no url para given, assume add default
+elseif ($_GET['action'] != 'add') {
+    $_GET["action"] = 'add';
 }
 
 //To select current year
@@ -109,7 +112,11 @@ $year = date("Y");
                 <textarea name="course_desc" cols="30" rows="10" required><?php if (isset($_SESSION['course']['course_desc'])) echo $_SESSION['course']['course_desc'] ?></textarea> <br>
                 <p class="error"><?php isset($_SESSION['e_msg']['course_desc']) ? print $_SESSION['e_msg']['course_desc'] : print '' ?></p>
 
-                <button type="submit" name="submit">Add</button>
+                <button type="submit" name="submit">
+                    <?php
+                    $_GET["action"] == 'add' ? print 'Add' : print 'Edit';
+                    ?>
+                </button>
             </fieldset>
 
         </form>

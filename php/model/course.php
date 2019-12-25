@@ -1,4 +1,6 @@
 <?php
+require_once '../function/run_query.php';
+
 class Course
 {
 	public $id;
@@ -10,7 +12,7 @@ class Course
 	public $course_desc;
 	public $created_by;
 
-	static function set_vals_and_validate(Course $course, $POST, &$mysqli)
+	static function set_vals_and_validate(Course $course, &$POST, &$mysqli, $action)
 	{
 		if (session_status() == PHP_SESSION_NONE)
 			session_start();
@@ -30,10 +32,28 @@ class Course
 		$course->course_name = $mysqli->real_escape_string($POST['course_name']);
 		if (strlen($course->course_name) > 255)
 			$_SESSION['e_msg']['course_name'] = 'Course Name should be shorter or equal 255 characters';
+		elseif ($action != 'edit') {
+			$sql = "SELECT * FROM course_view WHERE `course_name` = '$course->course_name'";
+			$res = get_row($sql);
+
+			//There exists that course_code in db
+			if (isset($res)) {
+				$_SESSION["e_msg"]['course_name'] = "Course Name is already exists, try new one.";
+			}
+		}
 
 		$course->course_code = $mysqli->real_escape_string($POST['course_code']);
 		if (strlen($course->course_code) > 20)
 			$_SESSION['e_msg']['course_code'] = 'Course Code should be shorter or equal 20 characters';
+		elseif ($action != 'edit') {
+			$sql = "SELECT * FROM course_view WHERE `course_code` = '$course->course_code'";
+			$res = get_row($sql);
+
+			//There exists that course_code in db
+			if (isset($res)) {
+				$_SESSION["e_msg"]['course_code'] = "Course Code is already exists, try new one.";
+			}
+		}
 
 		$course->cg_id = $mysqli->real_escape_string($POST['cg_id']);
 		if ($course->cg_id > 4 || $course->cg_id < 1)
