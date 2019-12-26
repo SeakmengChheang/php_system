@@ -16,16 +16,6 @@ $sql_delete_course = "DELETE FROM course WHERE id = $course_id";
 
 $sql_delete_course_from_student = "DELETE FROM student WHERE courseId = $course_id";
 
-$mysqli = open_mysqli();
-
-$mysqli->autocommit(FALSE);
-$mysqli->begin_transaction();
-
-$mysqli->query($sql_delete_course);
-$mysqli->query($sql_delete_course_from_student);
-
-$mysqli->commit();
-
-$mysqli->close();
+run_query($sql_delete_course);
 
 header("location: ../../course_handler.php");

@@ -2,7 +2,6 @@
 
 <?php
     session_start();
-    echo "Hello";
     include "message.php";
     if(isset($_SESSION['profile'])) {
         session_destroy();

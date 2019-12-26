@@ -18,6 +18,9 @@
         var header = "";
         <?php 
             $sql = ["SELECT * FROM user ORDER BY id","SELECT * FROM user ORDER BY username","SELECT * FROM user ORDER BY fullName","SELECT * FROM user ORDER BY role"];
+            if($profile["role"] != "staff"){
+                $sql = ["SELECT * FROM user WHERE role = 'staff' ORDER BY id","SELECT * FROM user WHERE role = 'staff' ORDER BY username","SELECT * FROM user WHERE role = 'staff' ORDER BY fullName","SELECT * FROM user WHERE role = 'staff' ORDER BY role"];
+            }
             function for_each($sql){
                 $datas = get_assoc($sql);
                 echo "<tr>
@@ -27,6 +30,7 @@
                 <th>ROLE</th>
                 </tr>";
                 foreach($datas as $data){
+                    $data["role"][0] = "S";
                     echo "<tr>
                     <td>".$data["id"]."</td>
                     <td>".$data["username"]."</td>
@@ -52,12 +56,12 @@
 </script>
 
 <?php
-   if($profile["role"] == "Staff"){
+    if($profile["role"] == "staff"){
         $datas = get_assoc("SELECT * FROM user ORDER BY id");
-   }
-   else{
-        $datas = get_assoc("SELECT * FROM user WHERE role = 'Staff' ORDER BY id ");
-   }
+    }
+    else{
+        $datas = get_assoc("SELECT * FROM user WHERE role = 'staff' ORDER BY id ");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +91,7 @@
                 <option>ID</option>
                 <option>USERNAME</option>
                 <option>NAME</option>
-                <?php if($profile["role"] == "Staff") echo "<option>ROLE</option>"; ?>
+                <?php if($profile["role"] == "staff") echo "<option>ROLE</option>"; ?>
             </select>
         </form>
         <!-- <button>SORT</button> -->
@@ -102,6 +106,7 @@
             </tr>
             <?php
                 foreach($datas as $data){
+                    $data["role"][0] = "S";
                     echo "<tr>
                     <td>".$data["id"]."</td>
                     <td>".$data["username"]."</td>

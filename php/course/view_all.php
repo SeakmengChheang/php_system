@@ -21,12 +21,12 @@ else {
     $sql = fetch_all_courses_cmd();
 }
 
-if(isset($_GET["sort_by"])) {
+if (isset($_GET["sort_by"])) {
     $sort_by = htmlspecialchars($_GET["sort_by"]);
-    $sql .= " ORDER BY $sort_by";
-}
-else {
-    $sql .= " ORDER BY academic";
+    $sort_by_order = htmlspecialchars($_GET["sort_by_order"]);
+    $sql .= " ORDER BY $sort_by $sort_by_order";
+} else {
+    $sql .= " ORDER BY academic $sort_by_order";
 }
 
 $res = get_assoc($sql);

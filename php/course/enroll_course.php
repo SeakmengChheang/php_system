@@ -8,8 +8,8 @@ include_once '../function/check_role.php';
 check_profile();
 student_only_page();
 
-//Fetch the id of enrolled courses
 $str_c_ids = concat_ids(get_num(fetch_student_enrolled_courseIds_cmd($_SESSION["profile"]["id"])));
+//Fetch the id of enrolled courses
 //When user searches
 if (isset($_GET['keyword']) && isset($_GET["option"])) {
     $option = htmlspecialchars($_GET["option"]);
@@ -24,16 +24,15 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
 }
 //In normal view
 else {
-    $sql = fetch_student_not_yet_enroll_courses($c_ids);
+    $sql = fetch_student_not_yet_enroll_courses($str_c_ids);
 }
-echo $sql;
-//echo $sql;
 
 if (isset($_GET["sort_by"])) {
     $sort_by = htmlspecialchars($_GET["sort_by"]);
-    $sql .= " ORDER BY $sort_by";
+    $sort_by_order = htmlspecialchars($_GET["sort_by_order"]);
+    $sql .= " ORDER BY $sort_by $sort_by_order";
 } else {
-    $sql .= " ORDER BY academic";
+    $sql .= " ORDER BY academic $sort_by_order";
 }
 
 $courses = get_assoc($sql);
