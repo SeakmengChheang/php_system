@@ -1,8 +1,9 @@
 <?php
-include_once '../function/sql_cmds.php';
-include_once '../function/run_query.php';
-include_once '../function/check_profile.php';
-include_once '../function/check_role.php';
+require_once '../function/sql_cmds.php';
+require_once '../function/run_query.php';
+require_once '../function/check_profile.php';
+require_once '../function/check_role.php';
+require_once '../function/sanitize_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -10,24 +11,31 @@ if (session_status() == PHP_SESSION_NONE)
 check_profile();
 staff_only_page();
 
-// if (!isset($_GET['action']))
-//     header("location: ../../course_handler.php");
+$conn = open_db();
 
 if ($_GET['action'] == 'edit') {
     //There is no failed in editing before
     //Then, fetch the data from db
     if (!isset($_SESSION["course"])) {
-        if (!isset($_GET['course_id']))
+        if (!isset($_GET['course_id'])) {
             header("location: course_handler.php");
+            die();
+        }
 
-        $course_id = htmlspecialchars($_GET["course_id"]);
+        $course_id = sanitize_string($conn, $_GET["course_id"]);
+
         $sql = fetch_course_cmd($course_id);
 
-        $course = get_assoc($sql);
-        print_r($course);
+        $course = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+
+        if (mysqli_errno($conn) != 0)
+            die(mysqli_error($conn));
 
         //There's only one course from db
-        $_SESSION['course'] = $course[0];
+        $_SESSION['course'] = $course;
+    } else {
+        foreach ($_SESSION["course"] as &$val)
+            $val = stripslashes($val);
     }
 }
 //If no url para given, assume add default
@@ -58,6 +66,13 @@ $year = date("Y");
     </style>
 
     <link rel="stylesheet" href="../../css/template.css">
+    <style>
+        .content {
+            display: inline-block;
+            vertical-align: middle;
+            width: max-content;
+        }
+    </style>
 </head>
 
 <body>
@@ -70,51 +85,49 @@ $year = date("Y");
                 <p>Academic Years*</p>
                 <input type="number" name="academic_y1" id="academic_y1" required value="<?php isset($_SESSION['course']['academic']) ? print explode('-', $_SESSION['course']['academic'])[0] : print $year ?>">
                 <label>to</label>
-                <input type="number" name="academic_y2" id="academic_y2" value="<?php isset($_SESSION['course']['academic']) ? print explode('-', $_SESSION['course']['academic'])[1] : print $year + 1 ?>" required>
-                <p class="error"><?php isset($_SESSION['e_msg']['academic']) ? print $_SESSION['e_msg']['academic'] : print '' ?></p>
+                <input type="number" name="academic_y2" id="academic_y2" required value="<?php isset($_SESSION['course']['academic']) ? print explode('-', $_SESSION['course']['academic'])[1] : print $year + 1 ?>">
+                <p class="error"><?php print $_SESSION['e_msg']['academic'] ?? '' ?></p>
 
                 <p>Semester*</p>
                 <select name="semester" required>
                     <?php
-                    $selected = 1;
-                    if (isset($_SESSION['course']['semester']))
-                        $selected = $_SESSION['course']['semester'];
+                    $selected = $_SESSION['course']['semester'] ?? 1;
                     for ($i = 1; $i <= 8; ++$i) {
                         $selected_val = ($selected == $i ? 'selected' : '');
                         echo "<option value=\"$i\" $selected_val>$i</option>";
                     }
                     ?>
                 </select>
-                <p class="error"><?php isset($_SESSION['e_msg']['semester']) ? print $_SESSION['e_msg']['semester'] : print '' ?></p>
+                <p class="error"><?php echo $_SESSION['e_msg']['semester'] ?? '' ?></p>
 
                 <p>Course Name*</p>
-                <input type="text" name="course_name" required value="<?php if (isset($_SESSION['course']['course_name'])) echo $_SESSION['course']['course_name'] ?>">
-                <p class="error"><?php isset($_SESSION['e_msg']['course_name']) ? print $_SESSION['e_msg']['course_name'] : print '' ?></p>
+                <input type="text" name="course_name" required value="<?php echo $_SESSION['course']['course_name'] ?? '' ?>">
+                <p class="error"><?php echo $_SESSION['e_msg']['course_name'] ?? '' ?></p>
 
                 <p>Course Code*</p>
-                <input type="text" name="course_code" required value="<?php if (isset($_SESSION['course']['course_code'])) echo $_SESSION['course']['course_code'] ?>">
-                <p class="error"><?php isset($_SESSION['e_msg']['course_code']) ? print $_SESSION['e_msg']['course_code'] : print '' ?></p>
+                <input type="text" name="course_code" required value="<?php echo $_SESSION['course']['course_code'] ?? '' ?>">
+                <p class="error"><?php echo $_SESSION['e_msg']['course_code'] ?? '' ?></p>
 
                 <p>Course Group*</p>
                 <select name="cg_id" required>
                     <?php
                     include_once '../model/course_group.php';
-                    if (isset($_SESSION['course']['cg_id'])) $cgId = $_SESSION['course']['cg_id'];
+                    $cgId = $_SESSION['course']['cg_id'] ?? 1;
                     for ($i = 1; $i <= 4; ++$i) {
                         $selected = ($cgId == $i ? "selected" : "");
                         echo "<option value=\"$i\" $selected>$cg_assoc[$i]</option>";
                     }
                     ?>
                 </select>
-                <p class="error"><?php isset($_SESSION['e_msg']['cg_id']) ? print $_SESSION['e_msg']['cg_id'] : print '' ?></p>
+                <p class="error"><?php echo $_SESSION['e_msg']['cg_id'] ?? '' ?></p>
 
                 <p>Course Description*</p>
-                <textarea name="course_desc" cols="30" rows="10" required><?php if (isset($_SESSION['course']['course_desc'])) echo $_SESSION['course']['course_desc'] ?></textarea> <br>
-                <p class="error"><?php isset($_SESSION['e_msg']['course_desc']) ? print $_SESSION['e_msg']['course_desc'] : print '' ?></p>
+                <textarea name="course_desc" cols="30" rows="10" required><?php echo $_SESSION['course']['course_desc'] ?? '' ?></textarea> <br>
+                <p class="error"><?php echo $_SESSION['e_msg']['course_desc'] ?? '' ?></p>
 
                 <button type="submit" name="submit">
                     <?php
-                    $_GET["action"] == 'add' ? print 'Add' : print 'Edit';
+                    echo ucfirst($_GET["action"]);
                     ?>
                 </button>
             </fieldset>
@@ -123,7 +136,6 @@ $year = date("Y");
     </div>
 
     <?php include '../../html/footer.html'; ?>
-
 
     <?php
     if (isset($_SESSION['course']))

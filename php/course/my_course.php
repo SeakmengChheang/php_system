@@ -1,8 +1,9 @@
 <?php
-include_once '../function/check_profile.php';
-include_once '../function/run_query.php';
-include_once '../function/sql_cmds.php';
-include_once '../helper/enroll_course_helper.php';
+require_once '../function/check_profile.php';
+require_once '../function/run_query.php';
+require_once '../function/sql_cmds.php';
+require_once '../helper/enroll_course_helper.php';
+require_once '../function/sanitize_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -10,6 +11,7 @@ if (session_status() == PHP_SESSION_NONE)
 check_profile();
 
 $id = $_SESSION['profile']['id'];
+$conn = open_db();
 
 //When user searches
 if (isset($_GET['keyword']) && isset($_GET["option"])) {
@@ -23,12 +25,12 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
     $c_ids = concat_ids(get_num($sql_cids));
     //
 
-    $option = htmlspecialchars($_GET["option"]);
-    $keyword = htmlspecialchars($_GET["keyword"]);
+    $option = sanitize_string($conn, $_GET["option"]);
+    $keyword = sanitize_string($conn, $_GET["keyword"]);
     if ($option == 'all') {
         $sql = search_all_fields($keyword);
     } else
-        $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
+        $sql = search_by_cmd($keyword, $option);
 
     $sql .= " AND id IN ($c_ids)";
     //echo $sql;
@@ -45,13 +47,24 @@ else {
 }
 
 if (isset($_GET["sort_by"])) {
-    $sort_by = htmlspecialchars($_GET["sort_by"]);
-    $sort_by_order = htmlspecialchars($_GET["sort_by_order"]);
-    $sql .= " ORDER BY $sort_by $sort_by_order";
+    $sort_by = sanitize_string($conn, $_GET["sort_by"]);
+    $sql .= " ORDER BY $sort_by";
 } else {
-    $sql .= " ORDER BY academic $sort_by_order";
+    $sql .= " ORDER BY academic";
 }
-$res = get_assoc($sql);
+
+if (isset($_GET["sort_by_order"]))
+    $sort_by_order = sanitize_string($conn, $_GET["sort_by_order"]);
+else
+    $sort_by_order = 'ASC';
+$sql .= ' ' . $sort_by_order;
+
+$courses = mysqli_fetch_all(mysqli_query($conn, $sql), MYSQLI_ASSOC);
+
+if(mysqli_errno($conn) != 0)
+    die(mysqli_error($conn));
+
+mysqli_close($conn);
 
 ?>
 
@@ -63,7 +76,7 @@ $res = get_assoc($sql);
 
     <script>
         function confirmation(e) {
-            if(!confirm('Are you sure?')) {
+            if (!confirm('Are you sure?')) {
                 e.preventDefault();
             }
         }
@@ -104,7 +117,7 @@ $res = get_assoc($sql);
 
             <tbody>
                 <?php
-                foreach ($res as $course) {
+                foreach ($courses as $course) {
                     echo "<tr>";
                     foreach ($course as $key => $val) {
                         if ($key == 'id') {
@@ -124,7 +137,7 @@ $res = get_assoc($sql);
                         $action_name = 'Delete';
                     }
 
-                    echo "<td><a href=\"$file_name.php?course_id=$course_id\" onclick=\"confirmation()\">$action_name</a></td>";
+                    echo "<td><a href=\"$file_name.php?course_id=$course_id\" class='del_unenroll_btn'>$action_name</a></td>";
                     echo "</tr>";
                 }
                 ?>
@@ -148,6 +161,12 @@ $res = get_assoc($sql);
     </div>
 
     <?php include_once '../../html/footer.html' ?>
+
+    <script>
+        let href = document.getElementsByClassName('del_unenroll_btn');
+        for (let a of href)
+            a.addEventListener('click', confirmation);
+    </script>
 
 </body>
 

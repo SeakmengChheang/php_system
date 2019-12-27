@@ -9,5 +9,10 @@
 </head>
 <body>
     <h1><?php echo " asdasd " ?></h1>
+
+    <?php 
+        $str = 'hello, world. hello';
+        echo ucwords($str);
+    ?>
 </body>
 </html>

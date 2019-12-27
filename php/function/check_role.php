@@ -5,11 +5,15 @@ if(session_status() == PHP_SESSION_NONE){
 }
 
 function staff_only_page() {
-    if($_SESSION['profile']['role'] != 'staff')
+    if($_SESSION['profile']['role'] != 'staff') {
         header("location: ../../index.php");
+        die();
+    }
 }
 
 function student_only_page() {
-    if($_SESSION['profile']['role'] != 'student')
+    if($_SESSION['profile']['role'] != 'student') {
         header("location: ../../index.php");
+        die();
+    }
 }

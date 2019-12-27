@@ -11,28 +11,22 @@ if (session_status() == PHP_SESSION_NONE)
 check_profile();
 staff_only_page();
 
-print_r($_SESSION["course"]);
+$conn = open_db();
 
 if (isset($_POST["submit"])) {
     $course = new Course();
-    $mysqli = open_mysqli();
     
-    if (!Course::set_vals_and_validate($course, $_POST, $mysqli, 'add')) {
+    if (!Course::set_vals_and_validate($course, $_POST, $conn, 'add')) {
         $_SESSION['course'] = (array) $course;
         header("location: form_course.php?action=add");
         $mysqli->close();
-        print_r($_SESSION["e_msg"]);
         die();
     }
 
     $sql = add_course_cmd($course);
-    $mysqli->query($sql);
-    if ($mysqli->errno == 0) {
-        header("location: ../../course_handler.php");
-    } else {
-        $_SESSION['course'] = (array) $course;
-        echo mysqli_error($link);
-        die();
-        header("location: form_course.php?action=add");
-    }
+    mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+    mysqli_close($conn);
+    header("location: ../../course_handler.php");
+    die();
 }

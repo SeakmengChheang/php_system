@@ -12,7 +12,17 @@
             include "php/function/get_value.php";
             
             $username = get_value("username" , "POST");
-            $password = get_value("password" , "POST");        
+            $password = get_value("password" , "POST");
+            $conn = open_db();
+            $user = $_POST["username"];
+            echo "Before: " . $user . '<br>';
+            echo 'stripslashes: ' . stripslashes($user) . '<br>';
+            echo 'strip_tags: ' . strip_tags($user) . '<br>';
+            $user =  mysqli_real_escape_string($conn, $user);
+            echo "After: " . $user . '<br>';
+            echo 'stripslashes: ' . stripslashes($user) . '<br>';
+            echo 'strip_tags: ' . strip_tags($user) . '<br>';
+            //die();
 
             $sql = "SELECT * FROM user WHERE username = '$username' && password = '$password' ";
 

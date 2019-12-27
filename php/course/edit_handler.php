@@ -1,9 +1,10 @@
 <?php
-include_once '../function/check_profile.php';
-include_once '../function/check_role.php';
-include_once '../model/course.php';
-include_once '../function/run_query.php';
-include_once '../function/sql_cmds.php';
+require_once '../function/check_profile.php';
+require_once '../function/check_role.php';
+require_once '../model/course.php';
+require_once '../function/run_query.php';
+require_once '../function/sql_cmds.php';
+require_once '../function/sanitize_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -13,22 +14,25 @@ staff_only_page();
 
 if (isset($_POST["submit"])) {
     $course = new Course();
-    $mysqli = open_mysqli();
-    $course->id = $mysqli->real_escape_string($_GET['course_id']);
+    $conn = open_db();
+    $course->id = sanitize_string($conn, $_GET['course_id']);
 
-    if (!Course::set_vals_and_validate($course, $_POST, $mysqli, 'edit')) {
+    if (!Course::set_vals_and_validate($course, $_POST, $conn, 'edit')) {
         $_SESSION['course'] = (array) $course;
         header("location: form_course.php?action=edit&course_id=$course->id");
-        $mysqli->close();
+        mysqli_close($conn);
         die();
     }
 
     $sql = update_course_cmd($course);
-    if ($mysqli->query($sql)) {
+    if (mysqli_query($conn, $sql)) {
         header("location: ../../course_handler.php");
+        die();
     } else {
         $_SESSION['course'] = (array) $course;
-        echo "<center><h1>Error updating the course</h1> <h3>Redirect back in 5s.</h3></center>";
+        echo "<center><h1>Error updating the course</h1> <h3>Redirect back in 3s.</h3></center>";
+        sleep(3000);
         header("location: form_course.php?action=edit&course_id=$course->id");
+        die();
     }
 }
