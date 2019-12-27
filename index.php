@@ -22,9 +22,12 @@ check_profile();
     <?php include 'html/header.html'; ?>
 
 
-    <!-- <div class="body">
-
-    </div> -->
+    <div class="content">
+        <button onclick="javascript:window.location='course_handler.php'">Course</button>
+        <button onclick="javascript:window.location='contact_handler.php'">Contact</button>
+        <button onclick="javascript:window.location='profile.php'">Profile</button>
+        <button onclick="javascript:window.location='log_out.php'">Log Out</button>
+    </div>
 
 
     <?php include 'html/footer.html'; ?>

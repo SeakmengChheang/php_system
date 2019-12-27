@@ -20,15 +20,19 @@ function fetch_staff_created_courses_cmd($id)
     return $sql;
 }
 
-function fetch_staff_created_courseIds_cmd($id) {
+function fetch_staff_created_courseIds_cmd($id)
+{
     $sql = "SELECT id FROM course WHERE createdBy = $id";
 
     return $sql;
 }
 
-function fetch_student_not_yet_enroll_courses($cIds)
+function fetch_student_not_yet_enroll_courses($str_c_ids)
 {
-    $sql = "SELECT * FROM course_view WHERE id NOT IN ($cIds)";
+    $sql = "SELECT * FROM course_view";
+
+    if ($str_c_ids != '')
+        $sql .= " WHERE id NOT IN ($str_c_ids)";
 
     return $sql;
 }
@@ -54,9 +58,9 @@ function update_course_cmd(Course $course)
     return $sql;
 }
 
-function fetch_course_cmd($courseId)
+function fetch_course_cmd($course_id)
 {
-    $sql = "SELECT c.id, c.academic, c.semester, c.courseName AS course_name,c.courseCode as course_code, c.cgId as cg_id, c.courseDescription AS course_desc FROM course AS c WHERE c.id = '$courseId';";
+    $sql = "SELECT c.id, c.academic, c.semester, c.courseName AS course_name,c.courseCode as course_code, c.cgId as cg_id, c.courseDescription AS course_desc FROM course AS c WHERE c.id = '$course_id';";
 
     return $sql;
 }
@@ -68,7 +72,8 @@ function search_by_cmd($keyword, $field)
     return $sql;
 }
 
-function search_all_fields($keyword) {
+function search_all_fields($keyword)
+{
     $sql = "SELECT * FROM course_view WHERE (`academic` LIKE '%$keyword%'
         OR `semester` LIKE '%$keyword%'
         OR `course_name` LIKE '%$keyword%'
@@ -76,6 +81,19 @@ function search_all_fields($keyword) {
         OR `course_group` LIKE '%$keyword%'
         OR `course_desc` LIKE '%$keyword%'
         OR `author` LIKE '%$keyword%')";
+
+    return $sql;
+}
+
+function unenroll_course_cmd($stu_id, $course_id)
+{
+    $sql =  "DELETE FROM student WHERE student.studentId = $stu_id AND student.courseId = $course_id;";
+
+    return $sql;
+}
+
+function enroll_course_cmd($stu_id, $course_id) {
+    $sql = "INSERT INTO student(studentId, courseId) VALUES($stu_id, $course_id);";
 
     return $sql;
 }

@@ -2,26 +2,45 @@
 require_once '../function/check_profile.php';
 require_once '../function/run_query.php';
 require_once '../function/sql_cmds.php';
+require_once '../function/sanitize_string.php';
 
 check_profile();
 
+$conn = open_db();
+
 //When user searches
 if (isset($_GET['keyword']) && isset($_GET["option"])) {
-    $option = htmlspecialchars($_GET["option"]);
-    $keyword = htmlspecialchars($_GET["keyword"]);
+    $option = sanitize_string($conn, $_GET["option"]);
+    $keyword = sanitize_string($conn, $_GET["keyword"]);
     if ($option == 'all')
         $sql = search_all_fields($keyword);
     else
-        $sql = search_by_cmd($_GET["keyword"], $_GET["option"]);
-
-    //echo $sql;
+        $sql = search_by_cmd($keyword, $option);
 }
 //In normal view
 else {
     $sql = fetch_all_courses_cmd();
 }
 
-$res = get_assoc($sql);
+if (isset($_GET["sort_by"])) {
+    $sort_by = sanitize_string($conn, $_GET["sort_by"]);
+    $sql .= " ORDER BY $sort_by";
+} else {
+    $sql .= " ORDER BY academic";
+}
+
+if (isset($_GET["sort_by_order"]))
+    $sort_by_order = sanitize_string($conn, $_GET["sort_by_order"]);
+else
+    $sort_by_order = 'ASC';
+$sql .= ' ' . $sort_by_order;
+
+$courses = mysqli_fetch_all(mysqli_query($conn, $sql), MYSQLI_ASSOC);
+
+if(mysqli_errno($conn) != 0)
+    die(mysqli_error($conn));
+
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +83,7 @@ $res = get_assoc($sql);
 
             <tbody>
                 <?php
-                foreach ($res as $course) {
+                foreach ($courses as $course) {
                     echo "<tr>";
                     foreach ($course as $key => $val)
                         if ($key != 'id' && $key != 'created_by')
