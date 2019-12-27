@@ -1,4 +1,4 @@
-<script src = "js/message.js"></script>
+<script src = "../../js/message.js"></script>
 
 <?php
 

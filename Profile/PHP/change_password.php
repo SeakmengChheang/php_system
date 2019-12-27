@@ -1,9 +1,12 @@
-<script src = "js/message.js"></script>
 <?php
-    session_start();
+    include "../../php/function/check_profile.php"; 
+    include "../../php/function/get_value.php";
+    include "../../php/function/run_query.php";
 
-    include "php/function/get_value.php";
-    include "php/function/run_query.php";
+    check_profile();
+    if(session_status() == PHP_SESSION_NONE){
+        session_start();
+    }
 
     $data = $_SESSION["profile"];
     
@@ -23,7 +26,7 @@
         $_SESSION["message"] = "WRONG PASSWORD";
     }
     header("location: profile.php");
-
+    exit();
 
 
 

@@ -1,11 +1,11 @@
-<script src="js/message.js"></script>
-
 <?php
     session_start();
-    include "message.php";
+    include "php/function/message.php";
+    include "php/function/head_location.php";
     if(isset($_SESSION['profile'])) {
         session_destroy();
-    } else {
+    } 
+    else {
         if(isset($_POST["username"]) && isset($_POST["password"])){
             // session_start();
             include "php/function/run_query.php";
@@ -19,8 +19,14 @@
             $data = get_assoc($sql);
 
             if(count($data) == 1){
+                if($data[0]["role"] == "staff"){
+                    $staffid = $data[0]["id"];
+                    $sql = "SELECT * FROM staff WHERE staffid = '$staffid'";
+                    $staffdata = get_assoc($sql);
+                    $data[0]["position"] = $staffdata[0]["position"];
+                }
                 $_SESSION["profile"] = $data[0];
-                header("location: profile.php");
+                head_location("Profile/PHP/profile.php");
             }
             else{
                 echo "<script>output('WRONG USERNAME OR PASSWORD')</script>";
@@ -67,7 +73,7 @@
                 </div>
 
                 <div class="signup-container">
-                    <p class="signup-p"><a href="sign_up.php" class="signup-a">Sign Up</a></p>
+                    <p class="signup-p"><a href="Register/PHP/sign_up.php" class="signup-a">Sign Up</a></p>
                 </div>
 
                 <div class="button-container">

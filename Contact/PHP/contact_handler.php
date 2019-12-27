@@ -1,21 +1,22 @@
 <?php
-    include "php/function/check_profile.php";
-    include "php/function/run_query.php";
-    
-    
-    if (session_status() == PHP_SESSION_NONE)
-        session_start();
+    include "../../php/function/check_profile.php";
+    include "../../php/function/run_query.php";
+    include "../../php/function/message.php";
+    include "FUNCTION/add_position.php";
 
     check_profile();
 
-    $profile = $_SESSION["profile"];
+    if (session_status() == PHP_SESSION_NONE)
+        session_start();
 
+    $profile = $_SESSION["profile"];
+    
     
 ?>
 
 <script>
+
     function change_sort() {
-        var header = "";
         <?php 
             $sql = ["SELECT * FROM user ORDER BY id","SELECT * FROM user ORDER BY username","SELECT * FROM user ORDER BY fullName","SELECT * FROM user ORDER BY role"];
             if($profile["role"] != "staff"){
@@ -23,11 +24,13 @@
             }
             function for_each($sql){
                 $datas = get_assoc($sql);
+                add_position($datas);
                 echo "<tr>
                 <th>ID</th>
                 <th>USERNAME</th>
                 <th>FULL NAME</th>
                 <th>ROLE</th>
+                <th>POSITION</th>
                 </tr>";
                 foreach($datas as $data){
                     $data["role"][0] = "S";
@@ -36,6 +39,7 @@
                     <td>".$data["username"]."</td>
                     <td>".$data["fullName"]."</td>
                     <td>".$data["role"]."</td>
+                    <td>".$data["position"]."</td>
                     </tr>";
                 }
             }
@@ -56,12 +60,20 @@
 </script>
 
 <?php
-    if($profile["role"] == "staff"){
-        $datas = get_assoc("SELECT * FROM user ORDER BY id");
+    $searchdatas = $_SESSION["search"] ?? "";
+    if($searchdatas == ""){
+        if($profile["role"] == "staff"){
+            $datas = get_assoc("SELECT * FROM user ORDER BY id");
+        }
+        else{
+            $datas = get_assoc("SELECT * FROM user WHERE role = 'staff' ORDER BY id ");
+        }
     }
     else{
-        $datas = get_assoc("SELECT * FROM user WHERE role = 'staff' ORDER BY id ");
+        $datas = $searchdatas;
+        $_SESSION["search"] = "";
     }
+    add_position($datas);
 ?>
 
 <!DOCTYPE html>
@@ -69,21 +81,22 @@
 <head>
     <title>Contact</title>
 
-    <link rel="stylesheet" href="css/template.css">
-    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="../../css/template.css">
+    <link rel="stylesheet" href="../../css/table.css">
 </head>
 
 <body>
-    <?php include 'html/header.html' ?>
+    <?php include '../../html/header.html' ?>
     <div>
-        <form action="">
-            <input type="text">
-            <select name="" id="">
-                <option value="">NAME</option>
-                <option value="">USERNAME</option>
-                <option value="">ANY</option>
+        <form action="search.php" method = "POST">
+            <input type="text" name = "input_search">
+            <select name="option" >
+                <option value = "0">-none-</option>
+                <option value = "1">NAME</option>
+                <option value = "2">USERNAME</option>
+                <option value = "3">ANY</option>
             </select>
-            <button>SEARCH</button>
+            <button type = "submit">SEARCH</button>
         </form>
         sortby:
         <form onchange="change_sort()" action="">
@@ -103,6 +116,7 @@
                 <th>USERNAME</th>
                 <th>FULL NAME</th>
                 <th>ROLE</th>
+                <th>POSITION</th>
             </tr>
             <?php
                 foreach($datas as $data){
@@ -112,6 +126,7 @@
                     <td>".$data["username"]."</td>
                     <td>".$data["fullName"]."</td>
                     <td>".$data["role"]."</td>
+                    <td>".$data["position"]."</td>
                     </tr>";
                 }
             ?>
@@ -121,7 +136,7 @@
 
     
 
-    <?php include 'html/footer.html' ?>
+    <?php include '../../html/footer.html' ?>
 </body>
 
 </html>
