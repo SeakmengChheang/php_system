@@ -3,7 +3,7 @@ require_once '../function/sql_cmds.php';
 require_once '../function/run_query.php';
 require_once '../function/check_profile.php';
 require_once '../function/check_role.php';
-require_once '../function/sanitize_string.php';
+require_once '../function/mysqli_real_escape_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -22,7 +22,7 @@ if ($_GET['action'] == 'edit') {
             die();
         }
 
-        $course_id = sanitize_string($conn, $_GET["course_id"]);
+        $course_id = mysqli_real_escape_string($conn, $_GET["course_id"]);
 
         $sql = fetch_course_cmd($course_id);
 
@@ -33,14 +33,21 @@ if ($_GET['action'] == 'edit') {
 
         //There's only one course from db
         $_SESSION['course'] = $course;
-    } else {
-        foreach ($_SESSION["course"] as &$val)
-            $val = stripslashes($val);
     }
 }
-//If no url para given, assume add default
+//If no url para given, assume add by default
 elseif ($_GET['action'] != 'add') {
     $_GET["action"] = 'add';
+}
+
+if (isset($_SESSION["course"])) {
+    echo $_SESSION["course"]['course_desc'];
+    $_SESSION["course"]['course_desc'] = nl2br($_SESSION["course"]["course_desc"]);
+    echo $_SESSION["course"]['course_desc'];
+    
+    //strip added slashes added by mysqli_real_escape_string
+    foreach ($_SESSION["course"] as &$val)
+        $val = stripslashes($val);
 }
 
 //To select current year
@@ -59,9 +66,12 @@ $year = date("Y");
         p {
             margin: 5px 0px 0px 0px !important;
         }
+        input[type=text] {
+            width: 350px;
+        }
 
-        .error {
-            color: darkred;
+        button[type=submit] {
+            float: right;
         }
     </style>
 
@@ -101,11 +111,11 @@ $year = date("Y");
                 <p class="error"><?php echo $_SESSION['e_msg']['semester'] ?? '' ?></p>
 
                 <p>Course Name*</p>
-                <input type="text" name="course_name" required value="<?php echo $_SESSION['course']['course_name'] ?? '' ?>">
+                <input type="text" id="course_name" name="course_name" required value="<?php echo $_SESSION['course']['course_name'] ?? '' ?>">
                 <p class="error"><?php echo $_SESSION['e_msg']['course_name'] ?? '' ?></p>
 
                 <p>Course Code*</p>
-                <input type="text" name="course_code" required value="<?php echo $_SESSION['course']['course_code'] ?? '' ?>">
+                <input type="text" id="course_code" name="course_code" required value="<?php echo $_SESSION['course']['course_code'] ?? '' ?>">
                 <p class="error"><?php echo $_SESSION['e_msg']['course_code'] ?? '' ?></p>
 
                 <p>Course Group*</p>
@@ -122,7 +132,7 @@ $year = date("Y");
                 <p class="error"><?php echo $_SESSION['e_msg']['cg_id'] ?? '' ?></p>
 
                 <p>Course Description*</p>
-                <textarea name="course_desc" cols="30" rows="10" required><?php echo $_SESSION['course']['course_desc'] ?? '' ?></textarea> <br>
+                <textarea name="course_desc" rows="10" cols="40" required><?php echo $_SESSION['course']['course_desc'] ?? '' ?></textarea>
                 <p class="error"><?php echo $_SESSION['e_msg']['course_desc'] ?? '' ?></p>
 
                 <button type="submit" name="submit">

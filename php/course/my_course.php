@@ -3,7 +3,6 @@ require_once '../function/check_profile.php';
 require_once '../function/run_query.php';
 require_once '../function/sql_cmds.php';
 require_once '../helper/enroll_course_helper.php';
-require_once '../function/sanitize_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -25,8 +24,8 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
     $c_ids = concat_ids(get_num($sql_cids));
     //
 
-    $option = sanitize_string($conn, $_GET["option"]);
-    $keyword = sanitize_string($conn, $_GET["keyword"]);
+    $option = mysqli_real_escape_string($conn, $_GET["option"]);
+    $keyword = mysqli_real_escape_string($conn, $_GET["keyword"]);
     if ($option == 'all') {
         $sql = search_all_fields($keyword);
     } else
@@ -47,14 +46,14 @@ else {
 }
 
 if (isset($_GET["sort_by"])) {
-    $sort_by = sanitize_string($conn, $_GET["sort_by"]);
+    $sort_by = mysqli_real_escape_string($conn, $_GET["sort_by"]);
     $sql .= " ORDER BY $sort_by";
 } else {
     $sql .= " ORDER BY academic";
 }
 
 if (isset($_GET["sort_by_order"]))
-    $sort_by_order = sanitize_string($conn, $_GET["sort_by_order"]);
+    $sort_by_order = mysqli_real_escape_string($conn, $_GET["sort_by_order"]);
 else
     $sort_by_order = 'ASC';
 $sql .= ' ' . $sort_by_order;

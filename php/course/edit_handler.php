@@ -4,7 +4,6 @@ require_once '../function/check_role.php';
 require_once '../model/course.php';
 require_once '../function/run_query.php';
 require_once '../function/sql_cmds.php';
-require_once '../function/sanitize_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -15,7 +14,7 @@ staff_only_page();
 if (isset($_POST["submit"])) {
     $course = new Course();
     $conn = open_db();
-    $course->id = sanitize_string($conn, $_GET['course_id']);
+    $course->id = mysqli_real_escape_string($conn, $_GET['course_id']);
 
     if (!Course::set_vals_and_validate($course, $_POST, $conn, 'edit')) {
         $_SESSION['course'] = (array) $course;

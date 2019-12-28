@@ -1,5 +1,6 @@
 <?php
 require_once '../function/run_query.php';
+require_once '../function/mysqli_real_escape_string.php';
 
 class Course
 {
@@ -36,10 +37,9 @@ class Course
 			$sql = "SELECT * FROM course_view WHERE `course_name` = '$course->course_name'";
 			$res = get_row($sql);
 
-			//There exists that course_code in db
-			if (isset($res)) {
+			//There exists that course_name in db
+			if (!empty($res))
 				$_SESSION["e_msg"]['course_name'] = "Course Name is already exists, try new one.";
-			}
 		}
 
 		$course->course_code = mysqli_real_escape_string($conn, $POST['course_code']);
@@ -50,18 +50,19 @@ class Course
 			$res = get_row($sql);
 
 			//There exists that course_code in db
-			if (isset($res)) {
+			if (!empty($res))
 				$_SESSION["e_msg"]['course_code'] = "Course Code is already exists, try new one.";
-			}
 		}
 
+		$POST['cg_id'] = nl2br($POST['cg_id']);
 		$course->cg_id = mysqli_real_escape_string($conn, $POST['cg_id']);
 		if ($course->cg_id > 4 || $course->cg_id < 1)
-			$_SESSION['e_msg']['cg_id'] = 'Course Group ID should be in range 1 to 4';
+		$_SESSION['e_msg']['cg_id'] = 'Course Group ID should be in range 1 to 4';
+
 
 		$course->course_desc = mysqli_real_escape_string($conn, $POST['course_desc']);
 		if (strlen($course->course_desc) > 65535)
-			$_SESSION['e_msg']['course_desc'] = 'Course Code should be shorter or equal 65,535 characters';
+			$_SESSION['e_msg']['course_desc'] = 'Course Code should be shorter or equal to 65,535 characters';
 
 		$course->created_by = $_SESSION['profile']['id'];
 
