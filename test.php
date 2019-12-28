@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="test.css">
-</head>
-<body>
-    <h1><?php echo " asdasd " ?></h1>
+<?php
 
-    <?php 
-        $str = 'hello, world. hello';
-        echo ucwords($str);
-    ?>
-</body>
-</html>
+    include "php/function/run_query.php";
+
+    $sql = "SELECT * FROM user";
+    $result = run_query($sql);
+
+    if($result){
+        echo "true";
+    }
+    else{
+        echo "false";
+    }
+
+?>

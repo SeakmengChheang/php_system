@@ -1,4 +1,4 @@
-<script src = "../../js/validate.js"></script>
+<script src = "../../js/validate2.js"></script>
 <?php
     include "../../php/function/message.php";
 ?>
