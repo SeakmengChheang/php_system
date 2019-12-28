@@ -1,7 +1,5 @@
 <?php
 require_once '../function/run_query.php';
-require_once '../function/mysqli_real_escape_string.php';
-
 class Course
 {
 	public $id;

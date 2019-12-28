@@ -3,7 +3,6 @@ include_once '../function/run_query.php';
 include_once '../function/open_db.php';
 include_once '../function/check_profile.php';
 include_once '../function/check_role.php';
-require_once '../function/mysqli_real_escape_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();

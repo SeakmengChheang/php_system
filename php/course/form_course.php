@@ -3,7 +3,6 @@ require_once '../function/sql_cmds.php';
 require_once '../function/run_query.php';
 require_once '../function/check_profile.php';
 require_once '../function/check_role.php';
-require_once '../function/mysqli_real_escape_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -31,7 +30,6 @@ if ($_GET['action'] == 'edit') {
         if (mysqli_errno($conn) != 0)
             die(mysqli_error($conn));
 
-        //There's only one course from db
         $_SESSION['course'] = $course;
     }
 }
@@ -40,14 +38,12 @@ elseif ($_GET['action'] != 'add') {
     $_GET["action"] = 'add';
 }
 
+//There are errors
 if (isset($_SESSION["course"])) {
-    echo $_SESSION["course"]['course_desc'];
-    $_SESSION["course"]['course_desc'] = nl2br($_SESSION["course"]["course_desc"]);
-    echo $_SESSION["course"]['course_desc'];
-    
     //strip added slashes added by mysqli_real_escape_string
+    //But preserve newline
     foreach ($_SESSION["course"] as &$val)
-        $val = stripslashes($val);
+        $val = stripcslashes($val);
 }
 
 //To select current year
@@ -65,9 +61,6 @@ $year = date("Y");
     <style>
         p {
             margin: 5px 0px 0px 0px !important;
-        }
-        input[type=text] {
-            width: 350px;
         }
 
         button[type=submit] {
@@ -132,7 +125,7 @@ $year = date("Y");
                 <p class="error"><?php echo $_SESSION['e_msg']['cg_id'] ?? '' ?></p>
 
                 <p>Course Description*</p>
-                <textarea name="course_desc" rows="10" cols="40" required><?php echo $_SESSION['course']['course_desc'] ?? '' ?></textarea>
+                <textarea name="course_desc" rows="10" cols="42" required><?php echo $_SESSION['course']['course_desc'] ?? '' ?></textarea>
                 <p class="error"><?php echo $_SESSION['e_msg']['course_desc'] ?? '' ?></p>
 
                 <button type="submit" name="submit">
