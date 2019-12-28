@@ -34,9 +34,8 @@ if ($_GET['action'] == 'edit') {
     }
 }
 //If no url para given, assume add by default
-elseif ($_GET['action'] != 'add') {
+else
     $_GET["action"] = 'add';
-}
 
 //There are errors
 if (isset($_SESSION["course"])) {

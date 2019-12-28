@@ -2,7 +2,6 @@
 require_once '../function/check_profile.php';
 require_once '../function/run_query.php';
 require_once '../function/sql_cmds.php';
-require_once '../function/mysqli_real_escape_string.php';
 
 check_profile();
 
