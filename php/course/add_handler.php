@@ -11,12 +11,14 @@ if (session_status() == PHP_SESSION_NONE)
 check_profile();
 staff_only_page();
 
-$conn = open_db();
-
 if (isset($_POST["submit"])) {
-    $course = new Course();
+    $conn = open_db();
+
+    $_POST['created_by'] = $_SESSION['profile']['id'];
+    sanitize_assoc($conn, $_POST);
+    $course = Course::assoc_array_to_obj($_POST);
     
-    if (!Course::set_vals_and_validate($course, $_POST, $conn, 'add')) {
+    if (!Course::validate($course)) {
         $_SESSION['course'] = (array) $course;
         header("location: form_course.php?action=add");
         $mysqli->close();

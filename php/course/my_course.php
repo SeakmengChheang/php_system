@@ -3,7 +3,6 @@ require_once '../function/check_profile.php';
 require_once '../function/run_query.php';
 require_once '../function/sql_cmds.php';
 require_once '../helper/enroll_course_helper.php';
-require_once '../function/sanitize_string.php';
 
 if (session_status() == PHP_SESSION_NONE)
     session_start();
@@ -15,23 +14,22 @@ $conn = open_db();
 
 //When user searches
 if (isset($_GET['keyword']) && isset($_GET["option"])) {
+    $option = mysqli_real_escape_string($conn, $_GET["option"]);
+    $keyword = mysqli_real_escape_string($conn, $_GET["keyword"]);
+    if ($option == 'all') {
+        $sql = search_all_fields($keyword);
+    } else
+        $sql = search_by_cmd($keyword, $option);
+
     //Fetch their courses ids whether added courses or enrolled courses
     //To create a range to search in
     if ($_SESSION['profile']['role'] == 'student')
         $sql_cids = fetch_student_enrolled_courseIds_cmd($id);
     else
         $sql_cids = fetch_staff_created_courseIds_cmd($id);
-
-    $c_ids = concat_ids(get_num($sql_cids));
     //
 
-    $option = sanitize_string($conn, $_GET["option"]);
-    $keyword = sanitize_string($conn, $_GET["keyword"]);
-    if ($option == 'all') {
-        $sql = search_all_fields($keyword);
-    } else
-        $sql = search_by_cmd($keyword, $option);
-
+    $c_ids = concat_ids(get_num($sql_cids));
     $sql .= " AND id IN ($c_ids)";
     //echo $sql;
 }
@@ -47,21 +45,21 @@ else {
 }
 
 if (isset($_GET["sort_by"])) {
-    $sort_by = sanitize_string($conn, $_GET["sort_by"]);
+    $sort_by = mysqli_real_escape_string($conn, $_GET["sort_by"]);
     $sql .= " ORDER BY $sort_by";
 } else {
     $sql .= " ORDER BY academic";
 }
 
 if (isset($_GET["sort_by_order"]))
-    $sort_by_order = sanitize_string($conn, $_GET["sort_by_order"]);
+    $sort_by_order = mysqli_real_escape_string($conn, $_GET["sort_by_order"]);
 else
     $sort_by_order = 'ASC';
 $sql .= ' ' . $sort_by_order;
 
 $courses = mysqli_fetch_all(mysqli_query($conn, $sql), MYSQLI_ASSOC);
 
-if(mysqli_errno($conn) != 0)
+if (mysqli_errno($conn) != 0)
     die(mysqli_error($conn));
 
 mysqli_close($conn);
@@ -143,7 +141,7 @@ mysqli_close($conn);
                 ?>
             </tbody>
         </table>
-
+        
         <form action="<?php $_SESSION['profile']['role'] == 'student'
                             ? print "enroll_course.php"
                             : print "form_course.php?action=add" ?>" method="POST">

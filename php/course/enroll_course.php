@@ -4,7 +4,6 @@ require_once '../function/run_query.php';
 require_once '../function/check_profile.php';
 require_once '../helper/enroll_course_helper.php';
 require_once '../function/check_role.php';
-require_once '../function/sanitize_string.php';
 
 check_profile();
 student_only_page();
@@ -14,8 +13,8 @@ $str_c_ids = concat_ids(get_num(fetch_student_enrolled_courseIds_cmd($_SESSION["
 //Fetch the id of enrolled courses
 //When user searches
 if (isset($_GET['keyword']) && isset($_GET["option"])) {
-    $option = sanitize_string($conn, $_GET["option"]);
-    $keyword = sanitize_string($conn, $_GET["keyword"]);
+    $option = mysqli_real_escape_string($conn, $_GET["option"]);
+    $keyword = mysqli_real_escape_string($conn, $_GET["keyword"]);
     if ($option == 'all') {
         $sql = search_all_fields($keyword);
     } else
@@ -30,14 +29,14 @@ else {
 }
 
 if (isset($_GET["sort_by"])) {
-    $sort_by = sanitize_string($conn, $_GET["sort_by"]);
+    $sort_by = mysqli_real_escape_string($conn, $_GET["sort_by"]);
     $sql .= " ORDER BY $sort_by";
 } else {
     $sql .= " ORDER BY academic";
 }
 
 if (isset($_GET["sort_by_order"]))
-    $sort_by_order = sanitize_string($conn, $_GET["sort_by_order"]);
+    $sort_by_order = mysqli_real_escape_string($conn, $_GET["sort_by_order"]);
 else
     $sort_by_order = 'ASC';
 $sql .= ' ' . $sort_by_order;

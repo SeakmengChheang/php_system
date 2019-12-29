@@ -1,5 +1,6 @@
 <?php
 $options = ['all' => 'All', 'academic' => 'Academic', 'semester' => 'Semester', 'course_name' => 'Course Name', 'course_code' => 'Course Code', 'course_group' => 'Course Group', 'course_desc' => 'Course Description', 'author' => 'Author'];
+
 if (isset($sort_by_order)) {
     $sort_by_order_sel = $sort_by_order;
 } else {
@@ -31,7 +32,7 @@ if (isset($sort_by_order)) {
             <option value="DESC" <?php if($sort_by_order_sel == 'DESC') echo 'selected' ?>>Descending</option>
         </select>
 
-        <input type="text" name="keyword" id="keyword" placeholder="Enter keyword to search..." size="70%" value="<?php if (isset($keyword)) echo $keyword ?>">
+        <input type="text" name="keyword" id="keyword" placeholder="Enter keyword to search..." size="70%" value="<?php if (isset($keyword)) echo stripslashes($keyword) ?>">
 
         <select name="option" id="option">
             <?php

@@ -51,4 +51,16 @@ function get_row($sql) {
     return $rtn;
 }
 
+function get_row_assoc($sql) {
+    $link = open_db();
+
+    $result = mysqli_query($link, $sql) or die(mysqli_error($link));
+
+    $rtn = mysqli_fetch_assoc($result);
+
+    $link->close();
+
+    return $rtn;
+}
+
 ?>

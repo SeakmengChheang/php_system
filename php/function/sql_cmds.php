@@ -46,21 +46,25 @@ function fetch_all_courses_cmd()
 
 function add_course_cmd($course)
 {
-    $sql = "INSERT INTO course(`academic`, `semester`, `courseName`, `courseCode`, `cgId`, `courseDescription`, `createdBy`) VALUES('$course->academic', '$course->semester', '$course->course_name', '$course->course_code', '$course->cg_id', '$course->course_desc', '$course->created_by')";
+    $academic = $course->academic_y1 . '-' . $course->academic_y2;
+
+    $sql = "INSERT INTO course(`academic`, `semester`, `courseName`, `courseCode`, `cgId`, `courseDescription`, `createdBy`) VALUES('$academic', '$course->semester', '$course->course_name', '$course->course_code', '$course->cg_id', '$course->course_desc', '$course->created_by')";
 
     return $sql;
 }
 
 function update_course_cmd(Course $course)
 {
-    $sql = "UPDATE course SET `academic`='$course->academic',`semester`='$course->semester',`courseName`='$course->course_name',`courseCode`='$course->course_code',`cgId`='$course->cg_id',`courseDescription`='$course->course_desc' WHERE id = '$course->id';";
+    $academic = $course->academic_y1 . '-' . $course->academic_y2;
+
+    $sql = "UPDATE course SET `academic`='$academic',`semester`='$course->semester',`courseName`='$course->course_name',`courseCode`='$course->course_code',`cgId`='$course->cg_id',`courseDescription`='$course->course_desc' WHERE id = '$course->id';";
 
     return $sql;
 }
 
 function fetch_course_cmd($course_id)
 {
-    $sql = "SELECT c.id, c.academic, c.semester, c.courseName AS course_name,c.courseCode as course_code, c.cgId as cg_id, c.courseDescription AS course_desc FROM course AS c WHERE c.id = '$course_id';";
+    $sql = "SELECT c.id, c.academic, c.semester, c.courseName AS course_name,c.courseCode as course_code, c.cgId as cg_id, c.courseDescription AS course_desc, c.createdBy as created_by FROM course AS c WHERE c.id = '$course_id';";
 
     return $sql;
 }
@@ -94,6 +98,12 @@ function unenroll_course_cmd($stu_id, $course_id)
 
 function enroll_course_cmd($stu_id, $course_id) {
     $sql = "INSERT INTO student(studentId, courseId) VALUES($stu_id, $course_id);";
+
+    return $sql;
+}
+
+function get_next_id_cmd($table_name) {
+    $sql = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_NAME = '$table_name'";
 
     return $sql;
 }

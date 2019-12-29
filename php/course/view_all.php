@@ -2,7 +2,6 @@
 require_once '../function/check_profile.php';
 require_once '../function/run_query.php';
 require_once '../function/sql_cmds.php';
-require_once '../function/sanitize_string.php';
 
 check_profile();
 
@@ -10,8 +9,8 @@ $conn = open_db();
 
 //When user searches
 if (isset($_GET['keyword']) && isset($_GET["option"])) {
-    $option = sanitize_string($conn, $_GET["option"]);
-    $keyword = sanitize_string($conn, $_GET["keyword"]);
+    $option = mysqli_real_escape_string($conn, $_GET["option"]);
+    $keyword = mysqli_real_escape_string($conn, $_GET["keyword"]);
     if ($option == 'all')
         $sql = search_all_fields($keyword);
     else
@@ -23,14 +22,14 @@ else {
 }
 
 if (isset($_GET["sort_by"])) {
-    $sort_by = sanitize_string($conn, $_GET["sort_by"]);
+    $sort_by = mysqli_real_escape_string($conn, $_GET["sort_by"]);
     $sql .= " ORDER BY $sort_by";
 } else {
     $sql .= " ORDER BY academic";
 }
 
 if (isset($_GET["sort_by_order"]))
-    $sort_by_order = sanitize_string($conn, $_GET["sort_by_order"]);
+    $sort_by_order = mysqli_real_escape_string($conn, $_GET["sort_by_order"]);
 else
     $sort_by_order = 'ASC';
 $sql .= ' ' . $sort_by_order;
