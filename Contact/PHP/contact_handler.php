@@ -12,6 +12,7 @@
     $profile = $_SESSION["profile"];
     
     
+    
 ?>
 
 <script>
@@ -83,33 +84,49 @@
 
     <link rel="stylesheet" href="../../css/template.css">
     <link rel="stylesheet" href="../../css/table.css">
+    <link rel="stylesheet" href="../CSS/contact.css">
 </head>
 
 <body>
     <?php include '../../html/header.html' ?>
-    <div>
-        <form action="search.php" method = "POST">
-            <input type="text" name = "input_search">
-            <select name="option" >
-                <option value = "0">-none-</option>
-                <option value = "1">NAME</option>
-                <option value = "2">USERNAME</option>
-                <option value = "3">ANY</option>
-            </select>
-            <button type = "submit">SEARCH</button>
-        </form>
-        sortby:
-        <form onchange="change_sort()" action="">
-            <select name="" id="sortby">
-                <option>ID</option>
-                <option>USERNAME</option>
-                <option>NAME</option>
-                <?php if($profile["role"] == "staff") echo "<option>ROLE</option>"; ?>
-            </select>
-        </form>
-        <!-- <button>SORT</button> -->
+    <div class = "container1">
+        <div id="sub1-container1">
+            <form action="search.php" method = "POST" class="form-sub1">
+                <div class="position">
+                    <div class="selectoption-sub1">
+                        <select name="option" id = "select-sub1">
+                            <option value = "0" >-Categories-</option>
+                            <option value = "1" >NAME</option>
+                            <option value = "2" >USERNAME</option>
+                            <option value = "3" >ANY</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="position">
+                    <div class="input-sub1">
+                        <input type="text" name = "input_search" placeholder="search" class = "input">
+                    </div>
+                </div>
+                <div class = "position" id="search_position">
+                    <div class="button-sub1">
+                        <button type = "submit" id = "searchbutton-sub1"><img src="../Image/research.svg" alt="" class="searchlogo-sub1"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="sub2-container1">
+            <form onchange="change_sort()" class="form-sub2">
+                sortby:
+                <select name="" id="sortby" class="select-sub2">
+                    <option>ID</option>
+                    <option>USERNAME</option>
+                    <option>NAME</option>
+                    <?php if($profile["role"] == "staff") echo "<option>ROLE</option>"; ?>
+                </select>
+            </form>
+        </div>
     </div>
-    <div>
+    <div class = "container2">
         <table id = "sortby-container">
             <tr>
                 <th>ID</th>

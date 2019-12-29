@@ -1,15 +1,13 @@
 <?php
 
-    include "php/function/run_query.php";
+    $con = mysqli_connect("localhost","root","","system");
+    $blah = $_GET["blah"];
 
-    $sql = "SELECT * FROM user";
-    $result = run_query($sql);
+    $blah = mysqli_real_escape_string($con , $blah);
+    $blah = stripslashes($blah);
 
-    if($result){
-        echo "true";
-    }
-    else{
-        echo "false";
-    }
+
+    echo $blah;
 
 ?>
+

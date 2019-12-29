@@ -107,10 +107,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profile</title>
-    <link rel="stylesheet" href="../CSS/profile.css">
+    <!-- <link rel="stylesheet" href="../CSS/profile.css"> -->
     <link rel="stylesheet" href="../CSS/profile2.css">
     <link rel="stylesheet" href="../CSS/button.css">
-    <link rel="stylesheet" href="../CSS/input_type_text.css">
+    <link rel="stylesheet" href="../CSS/input_type.css">
     <link rel="stylesheet" href="../../css/template.css">
 </head>
 <body>
@@ -120,9 +120,9 @@
 
     <div class="container1">
         <form onchange="change_option()" action="">
-            <label for="profile_option"><input type="radio" name = "option" id="profile_option" checked>Profile</label>
-            <label for="account_option"><input type="radio" name = "option" id="account_option" >Account</label>
-            <label for="deactivate_option"><input type="radio" name = "option" id="deactivate_option" >Deactivate</label>
+            <input type="radio" name = "option" id="profile_option" checked><label for="profile_option">Profile</label>
+            <input type="radio" name = "option" id="account_option" ><label for="account_option">Account</label>
+            <input type="radio" name = "option" id="deactivate_option" ><label for="deactivate_option">Deactivate</label>
         </form>
     </div>
 
