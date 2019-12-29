@@ -12,11 +12,16 @@ check_profile();
 staff_only_page();
 
 if (isset($_POST["submit"])) {
-    $course = new Course();
     $conn = open_db();
-    $course->id = mysqli_real_escape_string($conn, $_GET['course_id']);
 
-    if (!Course::set_vals_and_validate($course, $_POST, $conn, 'edit')) {
+    //Since we pass course_id in url para
+    $_POST['id'] = $_GET["course_id"];
+
+    sanitize_assoc($conn, $_POST);
+    $course = Course::assoc_array_to_obj($_POST);
+    unset($_POST);
+
+    if (!Course::validate($course)) {
         $_SESSION['course'] = (array) $course;
         header("location: form_course.php?action=edit&course_id=$course->id");
         mysqli_close($conn);
@@ -29,8 +34,6 @@ if (isset($_POST["submit"])) {
         die();
     } else {
         $_SESSION['course'] = (array) $course;
-        echo "<center><h1>Error updating the course</h1> <h3>Redirect back in 3s.</h3></center>";
-        sleep(3000);
         header("location: form_course.php?action=edit&course_id=$course->id");
         die();
     }

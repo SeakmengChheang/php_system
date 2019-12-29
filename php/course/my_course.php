@@ -14,16 +14,6 @@ $conn = open_db();
 
 //When user searches
 if (isset($_GET['keyword']) && isset($_GET["option"])) {
-    //Fetch their courses ids whether added courses or enrolled courses
-    //To create a range to search in
-    if ($_SESSION['profile']['role'] == 'student')
-        $sql_cids = fetch_student_enrolled_courseIds_cmd($id);
-    else
-        $sql_cids = fetch_staff_created_courseIds_cmd($id);
-
-    $c_ids = concat_ids(get_num($sql_cids));
-    //
-
     $option = mysqli_real_escape_string($conn, $_GET["option"]);
     $keyword = mysqli_real_escape_string($conn, $_GET["keyword"]);
     if ($option == 'all') {
@@ -31,6 +21,15 @@ if (isset($_GET['keyword']) && isset($_GET["option"])) {
     } else
         $sql = search_by_cmd($keyword, $option);
 
+    //Fetch their courses ids whether added courses or enrolled courses
+    //To create a range to search in
+    if ($_SESSION['profile']['role'] == 'student')
+        $sql_cids = fetch_student_enrolled_courseIds_cmd($id);
+    else
+        $sql_cids = fetch_staff_created_courseIds_cmd($id);
+    //
+
+    $c_ids = concat_ids(get_num($sql_cids));
     $sql .= " AND id IN ($c_ids)";
     //echo $sql;
 }
@@ -60,7 +59,7 @@ $sql .= ' ' . $sort_by_order;
 
 $courses = mysqli_fetch_all(mysqli_query($conn, $sql), MYSQLI_ASSOC);
 
-if(mysqli_errno($conn) != 0)
+if (mysqli_errno($conn) != 0)
     die(mysqli_error($conn));
 
 mysqli_close($conn);
@@ -142,7 +141,7 @@ mysqli_close($conn);
                 ?>
             </tbody>
         </table>
-
+        
         <form action="<?php $_SESSION['profile']['role'] == 'student'
                             ? print "enroll_course.php"
                             : print "form_course.php?action=add" ?>" method="POST">
