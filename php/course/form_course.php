@@ -77,9 +77,8 @@ $year = date("Y");
     <link rel="stylesheet" href="../../css/template.css">
     <style>
         .content {
-            display: inline-block;
-            vertical-align: middle;
-            width: max-content;
+            width: fit-content;
+            margin: auto;
         }
     </style>
 </head>
@@ -88,6 +87,7 @@ $year = date("Y");
     <?php include_once '../../html/header.html'; ?>
 
     <div class="content">
+        <h1><?php echo ucfirst($action) ?></h1>
         <form action="<?php $action == 'add' ? print 'add_handler.php' : print "edit_handler.php?course_id={$course->id}" ?>" method="post">
             <fieldset>
                 <legend>Course Info</legend>
