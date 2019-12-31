@@ -53,24 +53,29 @@ class Course
 		if ($course->semester > 8 || $course->semester < 1)
 			$_SESSION['e_msg']['semester'] = 'Semester should be in range 1 to 8';
 
-		if (strlen($course->course_name) > 255)
+		if (
+			empty($course->course_name)
+			|| strlen($course->course_name) > 255
+		)
 			$_SESSION['e_msg']['course_name'] = 'Course Name should be shorter or equal 255 characters';
 		else {
-			$sql = "SELECT * FROM course_view WHERE `course_name` = '$course->course_name'";
+			$sql = "SELECT id FROM course_view WHERE `course_name` = '$course->course_name'";
 			$res = get_row_assoc($sql);
 
 			//There exists that course_name in db
+			//Which is not it self
 			if (!empty($res) and $res['id'] != $course->id)
 				$_SESSION["e_msg"]['course_name'] = "Course Name is already exists, try new one.";
 		}
 
-		if (strlen($course->course_code) > 20)
+		if (empty($course->course_code) || strlen($course->course_code) > 20)
 			$_SESSION['e_msg']['course_code'] = 'Course Code should be shorter or equal 20 characters';
 		else {
-			$sql = "SELECT * FROM course_view WHERE `course_code` = '$course->course_code'";
+			$sql = "SELECT id FROM course_view WHERE `course_code` = '$course->course_code'";
 			$res = get_row_assoc($sql);
 
 			//There exists that course_code in db
+			//Which is not it self
 			if (!empty($res) and $res['id'] != $course->id)
 				$_SESSION["e_msg"]['course_code'] = "Course Code is already exists, try new one.";
 		}
@@ -78,7 +83,7 @@ class Course
 		if ($course->cg_id > 4 || $course->cg_id < 1)
 			$_SESSION['e_msg']['cg_id'] = 'Course Group ID should be in range 1 to 4';
 
-		if (strlen($course->course_desc) > 65535)
+		if (empty($course->course_desc) || strlen($course->course_desc) > 65535)
 			$_SESSION['e_msg']['course_desc'] = 'Course Code should be shorter or equal to 65,535 characters';
 
 		return !isset($_SESSION['e_msg']);

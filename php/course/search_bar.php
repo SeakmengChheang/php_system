@@ -1,11 +1,7 @@
 <?php
 $options = ['all' => 'All', 'academic' => 'Academic', 'semester' => 'Semester', 'course_name' => 'Course Name', 'course_code' => 'Course Code', 'course_group' => 'Course Group', 'course_desc' => 'Course Description', 'author' => 'Author'];
 
-if (isset($sort_by_order)) {
-    $sort_by_order_sel = $sort_by_order;
-} else {
-    $sort_by_order_sel = 'ASC';
-}
+$sort_by_order_sel = $sort_by_order ?? 'ASC';
 ?>
 
 <script>

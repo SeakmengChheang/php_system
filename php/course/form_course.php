@@ -72,23 +72,34 @@ $year = date("Y");
         button[type=submit] {
             float: right;
         }
-    </style>
 
-    <link rel="stylesheet" href="../../css/template.css">
-    <style>
         .content {
             width: fit-content;
             margin: auto;
         }
     </style>
+
+    <link rel="stylesheet" href="../../css/template.css">
+
+    <script src="../../js/check_exist.js"></script>
+    <script>
+        function check_if_no_error() {
+            let ps = document.getElementsByClassName('error');
+            for (p of ps) {
+                if (p.textContent != '')
+                    return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 
 <body>
     <?php include_once '../../html/header.html'; ?>
 
     <div class="content">
-        <h1><?php echo ucfirst($action) ?></h1>
-        <form action="<?php $action == 'add' ? print 'add_handler.php' : print "edit_handler.php?course_id={$course->id}" ?>" method="post">
+        <h1 style="text-align: center"><?php echo ucfirst($action) ?></h1>
+        <form action="<?php $action == 'add' ? print 'add_handler.php' : print "edit_handler.php?course_id={$course->id}" ?>" method="post" onsubmit="return check_if_no_error()">
             <fieldset>
                 <legend>Course Info</legend>
                 <p>Academic Years*</p>
@@ -110,12 +121,12 @@ $year = date("Y");
                 <p class="error"><?php echo $_SESSION['e_msg']['semester'] ?? '' ?></p>
 
                 <p>Course Name*</p>
-                <input type="text" id="course_name" name="course_name" maxlength="255" required value="<?php echo $course->course_name ?? '' ?>">
-                <p class="error"><?php echo $_SESSION['e_msg']['course_name'] ?? '' ?></p>
+                <input type="text" id="course_name" name="course_name" maxlength="255" required onblur="check_exist('course_name', <?php echo $course->id ?? -1 ?>)" value="<?php echo $course->course_name ?? '' ?>">
+                <p class="error course_name"><?php echo $_SESSION['e_msg']['course_name'] ?? '' ?></p>
 
                 <p>Course Code*</p>
-                <input type="text" id="course_code" name="course_code" maxlength="20" required value="<?php echo $course->course_code ?? '' ?>">
-                <p class="error"><?php echo $_SESSION['e_msg']['course_code'] ?? '' ?></p>
+                <input type="text" id="course_code" name="course_code" maxlength="20" required onblur="check_exist('course_code', <?php echo $course->id ?? -1 ?>)" value="<?php echo $course->course_code ?? '' ?>">
+                <p class="error course_code"><?php echo $_SESSION['e_msg']['course_code'] ?? '' ?></p>
 
                 <p>Course Group*</p>
                 <select name="cg_id" required>
