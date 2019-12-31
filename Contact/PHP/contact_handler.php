@@ -84,7 +84,8 @@
 
     <link rel="stylesheet" href="../../css/template.css">
     <link rel="stylesheet" href="../../css/table.css">
-    <link rel="stylesheet" href="../CSS/contact.css">
+    <!-- <link rel="stylesheet" href="../CSS/contact.css"> -->
+    <link rel="stylesheet" href="../CSS/contact2.css">
 </head>
 
 <body>
@@ -95,10 +96,10 @@
                 <div class="position">
                     <div class="selectoption-sub1">
                         <select name="option" id = "select-sub1">
-                            <option value = "0" >-Categories-</option>
+                            <option value = "0" >ALL</option>
                             <option value = "1" >NAME</option>
                             <option value = "2" >USERNAME</option>
-                            <option value = "3" >ANY</option>
+                            <!-- <option value = "3" >ANY</option> -->
                         </select>
                     </div>
                 </div>

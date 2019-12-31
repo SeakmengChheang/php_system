@@ -19,6 +19,9 @@
 .selectoption-sub1{
     margin: auto;
 }
+body{
+    background-color: violet;
+}
 #select-sub1{
     font-size: 25px;
     background: none;

@@ -29,8 +29,8 @@ function role_change(){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>REGISTER</title>
-    <link rel="stylesheet" href="../CSS/sign_up.css">
-    <!-- <link rel="stylesheet" href="../CSS/sign_up2.css"> -->
+    <!-- <link rel="stylesheet" href="../CSS/sign_up.css"> -->
+    <link rel="stylesheet" href="../CSS/sign_up2.css">
 </head>
 <body>
     <fieldset>
@@ -40,6 +40,7 @@ function role_change(){
                                                                                     validate('myform','fullname','FULL NAME')&&
                                                                                     validate('myform','role','ROLE')&&
                                                                                     validate('myform','staff_position','STAFF POSITION'))">
+            <a href="../../login.php"><img src="../Image/back.svg" alt="" class="backlogo"></a>
             <div class = "pagelogo-container">
                 <img src="../Image/sign-up.svg" alt="" class="pagelogo">
             </div>
