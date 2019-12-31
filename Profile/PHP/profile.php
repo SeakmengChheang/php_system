@@ -71,18 +71,18 @@
     function change_option(){
         if(document.getElementById("profile_option").checked){
             document.getElementById("container1-id").innerHTML = container1;
-            document.getElementById("container2-id").innerHTML = "";
-            document.getElementById("container3-id").innerHTML = "";
+            // document.getElementById("container2-id").innerHTML = "";
+            // document.getElementById("container3-id").innerHTML = "";
         }
         else if(document.getElementById("account_option").checked){
-            document.getElementById("container2-id").innerHTML = container2;
-            document.getElementById("container1-id").innerHTML = "";
-            document.getElementById("container3-id").innerHTML = ""; 
+            document.getElementById("container1-id").innerHTML = container2;
+            // document.getElementById("container1-id").innerHTML = "";
+            // document.getElementById("container3-id").innerHTML = ""; 
         }
         else if(document.getElementById("deactivate_option").checked){
-            document.getElementById("container3-id").innerHTML = container3;
-            document.getElementById("container1-id").innerHTML = "";
-            document.getElementById("container2-id").innerHTML = "";
+            document.getElementById("container1-id").innerHTML = container3;
+            // document.getElementById("container1-id").innerHTML = "";
+            // document.getElementById("container2-id").innerHTML = "";
             
         }
 
@@ -114,7 +114,7 @@
 
     <div class="container1">
         <form onchange="change_option()" action="">
-            <input type="radio" name = "option" id="profile_option" checked><label for="profile_option">Profile</label>
+            <input type="radio" name = "option" id="profile_option" ><label for="profile_option">Profile</label>
             <input type="radio" name = "option" id="account_option" ><label for="account_option">Account</label>
             <input type="radio" name = "option" id="deactivate_option" ><label for="deactivate_option">Deactivate</label>
         </form>
@@ -122,16 +122,41 @@
 
     <div id="container1-id">
     
-        <script>document.write(container1);</script>
+        <script>document.write(
+            <?php 
+                $value = $_SESSION["value"] ?? 0;
+                if($value == 0){
+                    echo "container1";
+                }
+                elseif($value == 1){
+                    echo "container1_update";
+                }
+                elseif($value == 2){
+                    echo "container2";
+                }
+                elseif($value == 3){
+                    echo "container3";
+                }
+            ?>);
+            document.getElementById("<?php 
+                $value = $_SESSION["value"] ?? 0;
+                if($value == 0){
+                    echo "profile_option";
+                }
+                elseif($value == 1){
+                    echo "profile_option";
+                }
+                elseif($value == 2){
+                    echo "account_option";
+                }
+                elseif($value == 3){
+                    echo "deactivate_option";
+                }
+                $_SESSION["value"] = 0;
+            ?>").checked = true;
+        </script>
     </div>
 
-    <div id="container2-id">
-    
-    </div>
-
-    <div id="container3-id">
-        
-    </div>
     <?php include "../../html/footer.html"; ?>
 </body>
 </html>

@@ -24,6 +24,7 @@
     }
     else{
         $_SESSION["message"] = "WRONG PASSWORD";
+        $_SESSION["value"] = 2;
     }
     header("location: profile.php");
     exit();

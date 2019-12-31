@@ -3,6 +3,11 @@ fieldset{
     margin: auto;
     background-color: rgba(0, 0, 0,0.2);
 }
+.backlogo{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+}
 .pagelogo-container{
     display: flex;
 }

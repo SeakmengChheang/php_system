@@ -19,15 +19,20 @@
 
     if(strlen($full_name) > 100){
         $_SESSION["message"] = "PLEASE INPUT FULL NAME LESS THAN 100 CHARACTER";
+        $_SESSION["value"] = 1;
     }
     elseif(preg_match('/[^a-zA-Z\s]/', $full_name)){
         $_SESSION["message"] = "FULLNAME INVALID \\nPLEASE INPUT CHARACTERS ONLY";
+        $_SESSION["value"] = 1;
     }
     elseif($staff_position != "" && preg_match('/[^a-zA-Z\s]/', $staff_position)){
         if(strlen($staff_position) > 100){
             $_SESSION["message"] = "PLEASE INPUT STAFF POSITION LESS THAN 100 CHARACTER";
+            $_SESSION["value"] = 1;
+            header("location: profile.php");
         }
         $_SESSION["message"] = "STAFF POSITION INVALID \\nPLEASE INPUT CHARACTERS ONLY";
+        $_SESSION["value"] = 1;
     }
     else{
         $username = $data["username"];

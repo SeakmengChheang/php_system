@@ -24,6 +24,7 @@
     }
     else{
         $_SESSION["message"] = "WRONG PASSWORD";
+        $_SESSION["value"] = 3;
         head_location("profile.php");
     }
 
