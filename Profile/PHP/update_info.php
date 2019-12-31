@@ -20,7 +20,7 @@
     if(strlen($full_name) > 100){
         $_SESSION["message"] = "PLEASE INPUT FULL NAME LESS THAN 100 CHARACTER";
     }
-    elseif(preg_match('/[^a-zA-Z\s]/', $fullname)){
+    elseif(preg_match('/[^a-zA-Z\s]/', $full_name)){
         $_SESSION["message"] = "FULLNAME INVALID \\nPLEASE INPUT CHARACTERS ONLY";
     }
     elseif($staff_position != "" && preg_match('/[^a-zA-Z\s]/', $staff_position)){

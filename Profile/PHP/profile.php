@@ -16,40 +16,33 @@
 
     var container1 = `<fieldset class="container" >
                 <legend><h1>I N F O R M A T I O N</h1></legend>
-                <div class="div1-1">
-                    <p>Username</p>
-                    <p>Full Name</p>
-                    <p>Role </p>   
-                    <p><?php if($data["role"] == "staff") { echo "Staff Position"; } ?> </p>
+                <div class="div-1">
+                    <div class="info"><div class="subdiv-1">Username</div>: <?php echo $data["username"]?></div>
+                    <div class="info"><div class="subdiv-1">Full Name</div>: <?php echo $data["fullName"]?></div>
+                    <div class="info"><div class="subdiv-1">Role</div>: <?php $data["role"][0] = 'S'; echo $data["role"]; $data["role"][0] = 's';?></div>
+                    <?php if($data["role"] == "staff") { echo "<div class='info'><div class='subdiv-1'>Position</div>: ".$data["position"]."</div>"; } ?>
                 </div>
-                <div class="div2-1">
-                    <p class="info">: <?php echo $data["username"]?></p>
-                    <p class="info">: <?php echo $data["fullName"]?></p>
-                    <p class="info">: <?php $data["role"][0] = 'S'; echo $data["role"]; $data["role"][0] = 's';?></p>
-                    <p class="info"><?php if($data["role"] == "staff") { echo ": ".$data["position"]; } ?></p>
+                
+                <div class="button">
+                    <button onclick = "edit_button()" class="button-1">EDIT</button>
                 </div>
-                <br>
-                <button onclick = "edit_button()" class="button">EDIT</button>
             </fieldset>`;
 
     var container1_update = `<fieldset class="container" >
             <legend><h1>I N F O R M A T I O N</h1></legend>
             <form name = "myform" action="update_info.php" method = "POST" onsubmit = "return (validate('myform','full_name','FULL NAME') &&
                                                                                               validate('myform','staff_position','STAFF POSITION'))  ">
-                <div class="div1-1">
-                    <p>Username</p>
-                    <p>Full Name</p>
-                    <p>Role </p> 
-                    <p><?php if($data["role"] == "staff") { echo "Staff Position"; } ?> </p>
+                <div class="div-1">
+                    <div class="info"><div class="subdiv-1">Username</div><span class="colun-1">:</span> <?php echo $data["username"]?></div>
+                    <div class="info"><div class="subdiv-1 inputsubdiv-1">Full Name</div>: <input type="text" placeholder="Full Name" name = "full_name" value = '<?php echo $data["fullName"];?>'></div>
+                    <div class="info"><div class="subdiv-1">Role</div><span class="colun-1">:</span> <?php $data["role"][0] = 'S'; echo $data["role"]; $data["role"][0] = 's';?></div>
+                    <?php if($data["role"] == "staff") { echo "<div class='info'><div class='subdiv-1 inputsubdiv-1'>Position</div>: <input type='text' name = 'staff_position' value = '".$data["position"]."'></div>"; } ?>
                 </div>
-                <div class="div2-1">
-                    <p class = "info">: <?php echo $data["username"]?></p>
-                    <p class = "info">: <input type="text" placeholder="Full Name" name = "full_name" value = '<?php echo $data["fullName"];?>'></p>
-                    <p class = "info">: <?php $data["role"][0] = 'S'; echo $data["role"]; $data["role"][0] = 's';?></p>
-                    <p class = "info"><?php if($data["role"] == "staff") { echo ": <input type='text' name = 'staff_position' value = '".$data["position"]."'>"; } ?></p>
+                
+                <div class="button">
+                    <button type = "submit" class="button-1">UPDATE</button>
                 </div>
-                <br>
-                <button type = "submit" class="button">UPDATE</button>
+                
             </form>
         </fieldset>`;
 
@@ -59,7 +52,9 @@
                 <input type="password" name = "old_password" placeholder="OLD PASSWORD"><br>
                 <input type="password" name = "new_password" placeholder="NEW PASSWORD"><br>
                 <input type="password" name = "cnew_password" placeholder="CONFIRM PASSWORD"><br>
-                <button type="submit" class="button">CHANGE PASSWORD</button>
+                <div class="button">
+                    <button type = "submit" class="button-1">CHANGE</button>
+                </div>
             </form>
             </fieldset>`;
 
@@ -67,7 +62,9 @@
             <legend><h1>D E A C T I V A T E</h1></legend>
             <form name = "myform1" action="deactivate.php" method="POST" onsubmit = "return (validate('myform1','password','PASSWORD') && con_firm('ARE YOU SURE YOU WANT TO DELETE?') )">
                 <input type="password" name = "password" placeholder="PASSWORD"><br>
-                <button type="submit" class="button">DEACTIVATE</button>
+                <div class="button">
+                    <button type = "submit" class="button-1">DEACTIVATE</button>
+                </div>
             </form>
             </fieldset>`;
 
@@ -107,10 +104,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Profile</title>
-    <!-- <link rel="stylesheet" href="../CSS/profile.css"> -->
-    <link rel="stylesheet" href="../CSS/profile2.css">
-    <link rel="stylesheet" href="../CSS/button.css">
-    <link rel="stylesheet" href="../CSS/input_type.css">
+    <link rel="stylesheet" href="../CSS/profile.css">
     <link rel="stylesheet" href="../../css/template.css">
 </head>
 <body>
@@ -127,11 +121,12 @@
     </div>
 
     <div id="container1-id">
+    
         <script>document.write(container1);</script>
     </div>
 
     <div id="container2-id">
-        
+    
     </div>
 
     <div id="container3-id">
