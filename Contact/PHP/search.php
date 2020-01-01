@@ -36,7 +36,7 @@
         case 1:
             $sql = "SELECT * FROM user WHERE fullName LIKE '%a%'";
             if($profile["role"] != "staff"){
-                $sql += " && role = 'staff'";
+                $sql .= " && role = 'staff'";
             }
             $datas = get_assoc($sql);
             if(count($datas)==0){
@@ -52,7 +52,7 @@
         case 2:
             $sql = "SELECT * FROM user WHERE username LIKE '%$input_search%'";
             if($profile["role"] != "staff"){
-                $sql += " && role = 'staff'";
+                $sql .= " && role = 'staff'";
             }
             $datas = get_assoc($sql);
             if(count($datas)==0){

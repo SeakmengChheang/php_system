@@ -81,19 +81,8 @@ $year = date("Y");
 
     <link rel="stylesheet" href="../../css/template.css">
 
-    <script src="../../js/check_exist.js"></script>
-    <script>
-        function check_if_no_error() {
-            let ps = document.getElementsByClassName('error');
-            for (p of ps) {
-                if (p.textContent != '') {
-                    alert("Please resolve the errors first before submit!");
-                    return false;
-                }
-            }
-            return true;
-        }
-    </script>
+    <!-- <script src="../../js/check_exist.js"></script> -->
+    <script src="../../js/course_validate.js"></script>
 </head>
 
 <body>
@@ -107,11 +96,11 @@ $year = date("Y");
                 <p>Academic Years*</p>
                 <input type="number" name="academic_y1" id="academic_y1" required value="<?php echo $course->academic_y1 ?? $year ?>">
                 <label>to</label>
-                <input type="number" name="academic_y2" id="academic_y2" required value="<?php echo $course->academic_y2 ?? $year + 1 ?>">
-                <p class="error"><?php print $_SESSION['e_msg']['academic'] ?? '' ?></p>
+                <input type="number" name="academic_y2" id="academic_y2" required value="<?php echo $course->academic_y2 ?? $year + 1 ?>" onblur="validate_academic()">
+                <p class="error" id="e_academic"><?php print $_SESSION['e_msg']['academic'] ?? '' ?></p>
 
                 <p>Semester*</p>
-                <select name="semester" required>
+                <select name="semester" id="semester" onblur="validate_semester()" required>
                     <?php
                     $selected = $course->semester ?? 1;
                     for ($i = 1; $i <= 8; ++$i) {
@@ -120,18 +109,18 @@ $year = date("Y");
                     }
                     ?>
                 </select>
-                <p class="error"><?php echo $_SESSION['e_msg']['semester'] ?? '' ?></p>
+                <p class="error" id="e_semester"><?php echo $_SESSION['e_msg']['semester'] ?? '' ?></p>
 
                 <p>Course Name*</p>
-                <input type="text" id="course_name" name="course_name" maxlength="255" required onblur="check_exist('course_name', <?php echo $course->id ?? -1 ?>)" value="<?php echo $course->course_name ?? '' ?>">
-                <p class="error course_name"><?php echo $_SESSION['e_msg']['course_name'] ?? '' ?></p>
+                <input type="text" id="course_name" name="course_name" maxlength="255" required onblur="validate_course_name(<?php echo $course->id ?? -1 ?>)" value="<?php echo $course->course_name ?? '' ?>">
+                <p class="error" id="e_course_name"><?php echo $_SESSION['e_msg']['course_name'] ?? '' ?></p>
 
                 <p>Course Code*</p>
-                <input type="text" id="course_code" name="course_code" maxlength="20" required onblur="check_exist('course_code', <?php echo $course->id ?? -1 ?>)" value="<?php echo $course->course_code ?? '' ?>">
-                <p class="error course_code"><?php echo $_SESSION['e_msg']['course_code'] ?? '' ?></p>
+                <input type="text" id="course_code" name="course_code" maxlength="20" required onblur="validate_course_code(<?php echo $course->id ?? -1 ?>)" value="<?php echo $course->course_code ?? '' ?>">
+                <p class="error" id="e_course_code"><?php echo $_SESSION['e_msg']['course_code'] ?? '' ?></p>
 
                 <p>Course Group*</p>
-                <select name="cg_id" required>
+                <select name="cg_id" id="cg_id" onblur="validate_cg_id()" required>
                     <?php
                     include_once '../model/course_group.php';
                     $cgId = $course->cg_id ?? 1;
@@ -141,11 +130,11 @@ $year = date("Y");
                     }
                     ?>
                 </select>
-                <p class="error"><?php echo $_SESSION['e_msg']['cg_id'] ?? '' ?></p>
+                <p class="error" id="e_cg_id"><?php echo $_SESSION['e_msg']['cg_id'] ?? '' ?></p>
 
                 <p>Course Description*</p>
-                <textarea name="course_desc" maxlength="65535" rows="10" cols="42" required><?php echo $course->course_desc ?? '' ?></textarea>
-                <p class="error"><?php echo $_SESSION['e_msg']['course_desc'] ?? '' ?></p>
+                <textarea name="course_desc" maxlength="65535" rows="10" cols="42" onblur="validate_course_desc()" required><?php echo $course->course_desc ?? '' ?></textarea>
+                <p class="error" id="e_course_desc"><?php echo $_SESSION['e_msg']['course_desc'] ?? '' ?></p>
 
                 <button type="submit" name="submit">
                     <?php
