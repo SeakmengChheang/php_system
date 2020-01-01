@@ -34,7 +34,7 @@
         break;
 
         case 1:
-            $sql = "SELECT * FROM user WHERE fullName LIKE '%a%'";
+            $sql = "SELECT * FROM user WHERE fullName LIKE '%$input_search%'";
             if($profile["role"] != "staff"){
                 $sql .= " && role = 'staff'";
             }
