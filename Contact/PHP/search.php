@@ -63,7 +63,6 @@
                 $_SESSION["search"] = $datas;
             }
         break;
-        
     }
     head_location("contact_handler.php");
 

@@ -24,8 +24,8 @@ check_profile();
 
     <div class="content">
         <button onclick="javascript:window.location='course_handler.php'">Course</button>
-        <button onclick="javascript:window.location='contact_handler.php'">Contact</button>
-        <button onclick="javascript:window.location='profile.php'">Profile</button>
+        <button onclick="javascript:window.location='Contact/PHP/contact_handler.php'">Contact</button>
+        <button onclick="javascript:window.location='Profile/PHP/profile.php'">Profile</button>
         <button onclick="javascript:window.location='log_out.php'">Log Out</button>
     </div>
 

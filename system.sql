@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 01, 2020 at 02:51 AM
+-- Generation Time: Jan 01, 2020 at 03:59 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -147,7 +147,8 @@ INSERT INTO `student` (`studentId`, `courseId`) VALUES
 (8, 86),
 (9, 154),
 (9, 86),
-(4, 162);
+(4, 161),
+(4, 154);
 
 --
 -- Triggers `student`
@@ -263,7 +264,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
 
 --
 -- AUTO_INCREMENT for table `course_group`
