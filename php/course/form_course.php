@@ -86,8 +86,10 @@ $year = date("Y");
         function check_if_no_error() {
             let ps = document.getElementsByClassName('error');
             for (p of ps) {
-                if (p.textContent != '')
+                if (p.textContent != '') {
+                    alert("Please resolve the errors first before submit!");
                     return false;
+                }
             }
             return true;
         }

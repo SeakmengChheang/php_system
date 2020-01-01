@@ -19,8 +19,7 @@ class Course
 	{
 		$rtn = new Course();
 
-		if (isset($arr['id']))
-			$rtn->id = $arr['id'];
+		$rtn->id = $arr['id'] ?? -1;
 		if (isset($arr['academic'])) {
 			$arr['academic_y1'] = explode('-', $arr['academic'])[0];
 			$arr['academic_y2'] = explode('-', $arr['academic'])[1];
@@ -45,6 +44,8 @@ class Course
 
 	static function validate(Course $course)
 	{
+		require_once '../function/check_exist.php';
+
 		if (!(is_numeric($course->academic_y1) && is_numeric($course->academic_y2)))
 			$_SESSION['e_msg']['academic'] = 'Years need to be in number';
 		elseif ($course->academic_y1 + 1 != $course->academic_y2)
@@ -59,24 +60,18 @@ class Course
 		)
 			$_SESSION['e_msg']['course_name'] = 'Course Name should be shorter or equal 255 characters';
 		else {
-			$sql = "SELECT id FROM course_view WHERE `course_name` = '$course->course_name'";
-			$res = get_row_assoc($sql);
-
-			//There exists that course_name in db
+			//There exists that course_code in db
 			//Which is not it self
-			if (!empty($res) and $res['id'] != $course->id)
+			if (check_exist('course_name', $course->course_name, $course->id))
 				$_SESSION["e_msg"]['course_name'] = "Course Name is already exists, try new one.";
 		}
 
 		if (empty($course->course_code) || strlen($course->course_code) > 20)
 			$_SESSION['e_msg']['course_code'] = 'Course Code should be shorter or equal 20 characters';
 		else {
-			$sql = "SELECT id FROM course_view WHERE `course_code` = '$course->course_code'";
-			$res = get_row_assoc($sql);
-
 			//There exists that course_code in db
 			//Which is not it self
-			if (!empty($res) and $res['id'] != $course->id)
+			if (check_exist('course_code', $course->course_code, $course->id))
 				$_SESSION["e_msg"]['course_code'] = "Course Code is already exists, try new one.";
 		}
 

@@ -1,6 +1,5 @@
 function check_exist(field, course_id) {
-	console.log(course_id);
-	let course_name = document.getElementById(field);
+	const course_name = document.getElementById(field);
 	const data = new FormData();
 
 	data.append('value', course_name.value);
