@@ -1,4 +1,4 @@
-<script src = "../../js/validate2.js"></script>
+<script src = "../../js/validate.js"></script>
 <?php
     include "../../php/function/message.php";
 ?>
@@ -29,8 +29,7 @@ function role_change(){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>REGISTER</title>
-    <!-- <link rel="stylesheet" href="../CSS/sign_up.css"> -->
-    <link rel="stylesheet" href="../CSS/sign_up2.css">
+    <link rel="stylesheet" href="../CSS/sign_up.css">
 </head>
 <body>
     <fieldset>
@@ -53,7 +52,7 @@ function role_change(){
                 <div class="catlogo-container">
                     <img src="../Image/userlogo.svg" alt="" class="catlogo">
                 </div>
-                    <input type="text" name="username" placeholder="Username">
+                <input type="text" name="username" placeholder="Username">
             </div>
             <div class="cat">
                 <div class="catlogo-container">

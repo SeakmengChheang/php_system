@@ -1,5 +1,5 @@
 <script src = "../../js/confirm.js"></script>
-<script src = "../../js/validate2.js"></script>
+<script src = "../../js/validate.js"></script>
 <?php
     include "../../php/function/check_profile.php"; 
     include "../../php/function/message.php";

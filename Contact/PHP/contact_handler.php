@@ -84,8 +84,7 @@
 
     <link rel="stylesheet" href="../../css/template.css">
     <link rel="stylesheet" href="../../css/table.css">
-    <!-- <link rel="stylesheet" href="../CSS/contact.css"> -->
-    <link rel="stylesheet" href="../CSS/contact2.css">
+    <link rel="stylesheet" href="../CSS/contact.css">
 </head>
 
 <body>

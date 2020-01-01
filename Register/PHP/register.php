@@ -35,7 +35,7 @@
         head_location("sign_up.php");
     }
     elseif($cpassword != $password){
-        $_SESSION["message"] = "PASSWORD ARE NOT THE SAME";
+        $_SESSION["message"] = "PASSWORDS ARE NOT THE SAME";
         head_location("sign_up.php");
     }
     elseif(preg_match('/[0-9]/', $username[0])){
